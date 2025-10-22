@@ -1,0 +1,146 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  padding: 50px;
+}
+
+img#logo {
+  width: 100%;
+}
+
+.login-body {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #fff;
+  border: 2px #e6e6e6 solid;
+  border-radius: 10px;
+  height: 35vh;
+  min-height: 350px;
+  width: 45vw;
+  margin: 0 auto;
+}
+
+.login-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  border-top: 1px #e6e6e6 solid;
+  padding-top: 5px;
+  margin-top: auto;
+  margin-bottom: 11px;
+}
+
+.login-footer a {
+  font-size: 0.75em;
+  color: #646464;
+}
+
+.app-title {
+  text-align: center;
+  color: #646464;
+  font-size: 0.75em;
+  margin-bottom: 35px;
+}
+.login-form {
+  text-align: center;
+}
+.login-logo {
+  max-width: 300px;
+  min-width: 200px;
+}
+.control-group {
+  margin-bottom: 10px;
+}
+input {
+  text-align: center;
+  background-color: #e6e6e6;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 10px 0;
+  width: 250px;
+  max-width: 50vw;
+  transition: border 0.5s;
+}
+input:focus {
+  border: 2px solid #3498db;
+  box-shadow: none;
+}
+.btn {
+  border: 2px solid transparent;
+  background: #3498db;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 25px;
+  padding: 10px 0;
+  text-decoration: none;
+  text-shadow: none;
+  border-radius: 5px;
+  box-shadow: none;
+  transition: 0.25s;
+  display: block;
+  width: 250px;
+  max-width: 50vw;
+  margin: 25px auto;
+}
+.btn:hover {
+  background-color: #2980b9;
+}
+.error {
+  color: red;
+  padding-bottom: 0.5em;
+}
+#submit {
+  transition: margin-left 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.activated {
+  margin-left: 1em;
+}
+.check > input {
+  width: 14px;
+}
+
+@media (max-width: 576px) {
+  .login-body {
+    height: 70vh;
+    width: 70vw;
+  }
+}
+@media (min-width: 576px) {
+  .login-body {
+    height: 60vh;
+    width: 65vw;
+  }
+}
+@media (min-width: 768px) {
+  .login-body {
+    height: 35vh;
+    width: 80vw;
+  }
+}
+@media (min-width: 992px) {
+  .login-body {
+    height: 40vh;
+    width: 60vw;
+  }
+}
+@media (min-width: 1200px) {
+  .login-body {
+    height: 35vh;
+    width: 50vw;
+  }
+}
+@media (min-width: 1500px) {
+  .login-body {
+    height: 35vh;
+    width: 45vw;
+  }
+}

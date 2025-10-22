@@ -1,0 +1,62 @@
+$backgroundColor: #e6e7e8;
+
+:root {
+  --background-color: #{$backgroundColor};
+  --background-color-dark: #{darken($backgroundColor, 25%)};
+  --main-color-light: #{lighten($backgroundColor, 10%)};
+  --hover-color-light: #{lighten($backgroundColor, 5%)};
+  --hover-color-dark: #{darken($backgroundColor, 5%)};
+  --main-color-dark: #{darken($backgroundColor, 10%)};
+  --border-color: #{darken($backgroundColor, 20%)};
+  --border-color-dark: #{darken($backgroundColor, 40%)};
+}
+
+body {
+  background: var(--background-color);
+}
+
+.freeze-scroll {
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+.paste-overlay {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  display: flex;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  background: #dddddddd;
+  z-index: 1000;
+
+  >h1 {
+    align-self: center;
+  }
+}
+
+
+
+.intens-input,
+.intens-select-input {
+  padding: 2px 5px !important;
+
+  &.numerical {
+    text-align: right;
+  }
+}
+
+label,
+.intens-button span {
+  font-size: 13px;
+  line-height: 13px;
+}
+
+.intens-textfield {
+  margin: 1px;
+}
+
+.intens-fieldgroup-lines.vertical .intens-input {
+  padding: 2px 5px !important;
+}

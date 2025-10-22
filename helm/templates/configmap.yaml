@@ -1,0 +1,22 @@
+{{ if or .Values.customStyles.styles .Values.customScripts.scripts }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "webtens.fullname" . }}-customfiles
+  labels:
+    {{- include "webtens.labels" . | nindent 4 }}
+data:
+  {{ if .Values.customStyles.styles }}
+  {{ .Values.customStyles.fileName }}: |-
+    {{ .Values.customStyles.styles | b64dec |nindent 4 }}
+  {{ end }}
+  {{ if .Values.customScripts.scripts }}
+  {{ .Values.customScripts.fileName }}: |-
+    {{ .Values.customScripts.scripts | b64dec | nindent 4 }}
+  {{ end }}
+binaryData:
+  {{- range $key, $value := .Values.customFiles}}
+  {{ $key }}: |-
+    {{ $value | nindent 4 }}
+  {{- end }}
+{{ end }}

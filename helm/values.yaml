@@ -1,0 +1,50 @@
+# Default values for webtens
+
+image:
+  repository: ghcr.io/semaforinformatik/webtens
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+
+nameOverride: ""
+fullnameOverride: ""
+
+baseUrl: http://localhost:8000
+
+appName: INTENS
+appType:
+logoName: semafor
+configControllerHost: config-controller
+hideControlBar: false
+
+customStyles:
+  fileName:
+  styles:
+customScripts:
+  fileName:
+  scripts:
+
+customFiles:
+
+alternativeOptions:
+  enabled: false
+  message:
+  values:
+
+oidc:
+  enabled: false
+  issuer: http://keycloak.k8s.semafor.ch/realms/semafor
+  client: webtens
+  clientSecret: 4PzroODVy016cdOUfTvqzyqBbdhSK20w
+
+redis:
+  enabled: false
+  host: redis-master
+  port: 6378
+  password: 
+
+otel:
+  enabled: false
+  endpoint: "http://tempo.grafana:4318/v1/traces"
+

@@ -1,0 +1,16 @@
+export const LINE_COLOR = "black";
+export const LINE_CREATED_COLOR = "#A1289F";
+export const LINE_SELECTED_COLOR = "blue";
+export const LINE_STROKE_WIDTH = 3;
+export const NODE_SELECTED_COLOR = "black";
+export const NODE_DESELECTED_COLOR = null;
+export const NODE_STROKE_WIDTH = 2;
+export const NODE_STROKE_WIDTH_DESELECTED = 0;
+export const NODE_STROKE_DASHED = [3, 3, 3, 0];
+export const NODE_STROKE_DASHED_DESELECTED = [];
+export const PIXEL_MAGNITUDE = 12;
+export const TOOLTIP_POPUP_TIME_MS = 1 * 1000;
+export const TOOLTIP_FONT_SIZE = 15;
+export const DELETE_MULTIPLE_ELEMENTS_TEXT = "Delete selected Element/Connection";
+export const DELETE_MULTIPLE_ELEMENTS_REASON = "REMOVE_ELEMENT";
+export const DELETE_NODE_KEYCODE = "Delete";

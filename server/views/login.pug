@@ -1,0 +1,104 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    link(rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.2.0/css/solid.css")
+    link(rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.2.0/css/fontawesome.css")
+    link(rel="stylesheet"
+          href="res/styles.css")
+    - var iconPath = `res/${logoName}.ico`
+    link(rel="icon" href=iconPath type="image/x-icon")
+    title #{appName} Login
+
+  script.
+    function getLang() {
+      var s = "";
+      if (navigator.languages != undefined)
+        s = navigator.languages[0];
+      else
+        s = navigator.userLanguage || navigator.language || navigator.browserLanguage || 'en';
+      if (s.length < 3 && s == "sv") {  // special case for sweden
+        s += "_SE";
+      }
+      s = s.replace("-","_");
+      return s;
+    }
+    function getTZMinutesFromUTC() {
+      return new Date().getTimezoneOffset() * -1
+    }
+
+  body(style={background: backgroundColor})
+    if particles
+      style.
+        #particles {
+          z-index: -999;
+          width: 100vw;
+          height: 100vh;
+          position: fixed;
+          top: 0;
+          left: 0;
+        }
+        #bg-image {
+          position: fixed;
+          width: 100vw;
+          height: 100vh;
+          z-index: -2;
+          background-image: url(res/femag-bg.jpg);
+          background-size: cover;
+          opacity: .25;
+          filter: blur(3px);
+        }
+      #particles
+        #bg-image
+    form(action=oidc ? "oidc-login" : "login", method= oidc ? 'GET' : 'POST'
+          onsubmit="((b) => {\
+          document.getElementById('language').value = getLang();\
+          document.getElementById('utcOffset').value = getTZMinutesFromUTC();\
+          console.info('Language: ', document.getElementById('language').value);\
+          b.classList.add('fas', 'fa-circle-notch', 'fa-spin', 'activated')\
+          }\
+          )(document.getElementById('submit'))")
+      .font-loader.fas.fa-circle-notch(style="display: none;")
+      .login-body
+        .login-logo
+          - var logoPath = `res/${logoName}.png`
+          img(src=logoPath)#logo
+        .login-form
+          .app-title
+            h1 #{appName} Login
+          if !oidc
+            .control-group
+              input.login-field(type='text', value=username || '', placeholder='username', name='username' required)
+            .control-group
+              input.login-field(type='password', value='', placeholder='password', name='password' required)
+            input.login-field(type='hidden', value='def_lang', placeholder='lang', id='language' name='language' required)
+            input.login-field(type='hidden', value='def_tz', placeholder='tz', id='utcOffset' name='utcOffset' required)
+            if error
+              .error= error
+          else
+            if error
+              .error= error
+          if alternatives
+            .control-group
+              .check
+                input.login-field(type='checkbox', value=alternatives || '', name='alternatives')
+                label(for="alternatives") #{alternatives}
+          button.btn.btn-primary.btn-large.btn-block(type='submit')#login
+            | LOGIN
+            i#submit
+        .login-footer
+          a(href="https://www.semafor.ch/en/legal-notice/disclaimer/") Disclaimer
+          a(href="https://www.semafor.ch/en/legal-notice/cookie-policy/") Cookie policy
+          a(href="https://www.semafor.ch/en/legal-notice/acceptable-use-policy/") Acceptable use policy
+          a(href="https://www.semafor.ch/en/legal-notice/privacy-policy/") Privacy policy
+
+    if particles
+      script(src="res/particles.min.js")
+      script.
+        particlesJS.load('particles', 'res/particles.lines.json', function() {
+          console.log('callback - particles.js config loaded');
+        });

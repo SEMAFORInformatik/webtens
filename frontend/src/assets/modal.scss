@@ -1,0 +1,46 @@
+.intens-modal {
+  width: 100%;
+  height: 100%;
+  background-color: var(--background-color);
+
+  .intens-button {
+    &, & > span {
+      cursor: pointer !important;
+    }
+  }
+}
+
+.modal-body {
+  padding: 15px;
+  .message {
+    padding: 10px;
+  }
+}
+
+.modal-title {
+  background-color: var(--background-color-dark);
+  padding: 0.8em;
+  border-bottom: 1px solid dimgray;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.modal-buttonbar {
+  display: grid;
+  grid-column-gap: 10px;
+  margin-top: 15px;
+  i-button {
+    margin: 0px 1px;
+    width: auto;
+  }
+  &:has(> :last-child:nth-child(1)) {
+    display: flex;
+    justify-content: end;
+  }
+}
+
+.modal-input {
+  width: 100%;
+  border: 1px solid #e9e9e9;
+  padding: 5px;
+}

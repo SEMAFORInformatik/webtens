@@ -1,0 +1,149 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "webtens.fullname" . }}
+  labels:
+    {{- include "webtens.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "webtens.selectorLabels" . | nindent 6 }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        {{- include "webtens.selectorLabels" . | nindent 8 }}
+        app: {{ include "webtens.fullname" . }}
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "9464"
+        prometheus.io/scrape: "true"
+        k8s.grafana.com/scrape: "true"
+        k8s.grafana.com/metrics.path: /metrics
+        k8s.grafana.com/metrics.portNumber: "9464"
+    spec:
+      {{- if .Values.affinity }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            {{- range $key, $value := .Values.affinity }}
+            - matchExpressions:
+              - key: {{ $key }}
+                operator: In
+                values:
+                - "{{ $value }}"
+            {{- end }}
+      {{- end }}
+      containers:
+        - image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: {{ .Chart.Name }}
+          ports:
+            - name: webtens-port
+              containerPort: 8000
+            - name: metrics-port
+              containerPort: 9464
+          env:
+            - name: APP_NAME
+              value: {{ .Values.appName }}
+            - name: LOGO_NAME
+              value: {{ .Values.logoName }}
+            - name: BASE_URL
+              value: "{{ .Values.baseUrl }}"
+            - name: CONFIG_CONTROLLER_URL
+              value: "http://{{ .Values.configControllerHost }}:3333"
+            {{- if .Values.appType }}
+            - name: CONTAINER_TYPE
+              value: "{{ .Values.appType }}"
+            {{- else }}
+            {{ fail `appType not set. Please set the appType value to the name you set in the config-controller's intensApps key.`}}
+            {{- end }}
+            {{- if .Values.hideControlBar }}
+            - name: HIDE_CONTROL_BAR
+              value: "true"
+            {{- end }}
+            {{- if .Values.oidc.enabled }}
+            - name: OIDC_ISSUER
+              value: {{ .Values.oidc.issuer }}
+            - name: OIDC_CLIENT
+              value: {{ .Values.oidc.client }}
+            - name: OIDC_CLIENT_SECRET
+              value: {{ .Values.oidc.clientSecret }}
+            {{- end }}
+            {{- if .Values.alternativeOptions.enabled }}
+            - name: ALTERNATIVES
+              value: "true"
+            - name: ALTERNATIVES_LABEL
+              value: "{{ .Values.alternativeOptions.message }}"
+            {{- range $key, $value := .Values.alternativeOptions.values }}
+            - name: ALTERNATIVE_{{ $key }}
+              value: "{{ $value }}"
+            {{- end }}
+            {{- end }}
+            {{- if .Values.redis.enabled }}
+            - name: REDIS_HOST
+              value: "{{ .Values.redis.host }}"
+            - name: REDIS_PORT
+              value: "{{ .Values.redis.port }}"
+            - name: REDIS_PASSWORD
+              value: "{{ .Values.redis.password }}"
+            {{- end }}
+            {{- if .Values.otel.enabled }}
+            - name: OTEL_ENDPOINT
+              value: "{{ .Values.otel.endpoint }}"
+            {{- end }}
+            {{ if .Values.customStyles.styles }}
+            - name: CUSTOM_STYLES
+              value: custom/{{ .Values.customStyles.fileName }}
+            {{ end }}
+            {{ if .Values.customScripts.scripts }}
+            - name: CUSTOM_SCRIPTS
+              value: custom/{{ .Values.customScripts.fileName }}
+            {{ end }}
+            {{- if .Values.customEnv }}
+            {{- range $name, $value := .Values.customEnv }}
+            - name: {{ $name }}
+              value: "{{ $value }}"
+            {{- end }}
+            {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: webtens-port
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          {{ if or .Values.customStyles.styles .Values.customScripts.scripts }}
+          volumeMounts:
+          - name: customfiles
+            mountPath: "/home/app/server/public/custom"
+            readOnly: true
+          {{ end }}
+
+#          resources:
+#            requests:
+#              memory: "400Mi"
+#            limits:
+# 
+#              memory: "500Mi"
+      {{ if or .Values.customStyles.styles .Values.customScripts.scripts }}
+      volumes:
+        - name: customfiles
+          configMap:
+            name: {{ include "webtens.fullname" . }}-customfiles
+            items:
+              {{ if .Values.customStyles.styles }}
+              - key: {{ .Values.customStyles.fileName }}
+                path: {{ .Values.customStyles.fileName }}
+              {{ end }}
+              {{ if .Values.customScripts.scripts }}
+              - key: {{ .Values.customScripts.fileName }}
+                path: {{ .Values.customScripts.fileName }}
+              {{ end }}
+              {{- range $key, $value := .Values.customFiles}}
+              - key: {{ $key }}
+                path: {{ $key }}
+              {{ end }}
+      {{ end }}
+      imagePullSecrets:
+        - name: {{ include "webtens.fullname" . }}-registry

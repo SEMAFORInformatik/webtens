@@ -1,0 +1,8 @@
+apiVersion: v2
+name: webtens
+description: web frontend for intens
+type: application
+
+version: "1.4.0"
+
+appVersion: "1.4.1"
