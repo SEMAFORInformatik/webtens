@@ -46,7 +46,7 @@ class IntensIconView extends mixins(base) {
 
   storeNodes(value: IntensIconViewData) {
     try {
-      this.nodes = value.root[0].node;
+      this.nodes = value.root.nodes[0].nodes[0].nodes;
     } catch (e) {
       console.error("could not store nodes");
     }
