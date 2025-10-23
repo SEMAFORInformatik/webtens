@@ -13,6 +13,7 @@
       v-if="!data.typeLabel"
       v-tooltip="data.helptext"
       ref="inputElement"
+      autocomplete="off"
       @keyup.enter="execEnter"
       @focus="onFocus"
       @blur="exec"

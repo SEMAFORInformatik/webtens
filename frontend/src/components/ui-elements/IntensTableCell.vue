@@ -14,7 +14,7 @@
         :id="data.element.base.fullName || data.element.base.action" ref="input" class="edit-input" type="text" :style="{
         textAlign: !isDouble ? 'left' : 'right',
         backgroundColor: data.element.base.bgColor ? data.element.base.bgColor : 'inherit'
-      }" v-model="value" @keyup.enter="sendValueUpdate" @blur="sendValueUpdate" @keydown="handleKey" />
+      }" v-model="value" @keyup.enter="sendValueUpdate" @blur="sendValueUpdate" @keydown="handleKey" autocomplete="off" />
       <span v-else
         :id="data.element.base.fullName || data.element.base.action" ref="input" class="span-input" type="text" :style="{
         textAlign: !isDouble ? 'left' : 'right',
