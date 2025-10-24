@@ -179,7 +179,7 @@ export default class MainApp extends mixins(base) {
   setForm() {
     if (!this.loaded) return;
     if (Object.values(this.forms).reduce((a, b) => a || b.form.modal, false)) {
-      this.openForm = Object.keys(this.forms).find(key => this.forms[key].form.modal);
+      this.openForm = Object.keys(this.forms).findLast(key => this.forms[key].form.modal);
     } else if (this.$intens.currentForm !== "") {
       this.openForm = this.$intens.currentForm;
     } else if (Object.keys(this.forms).pop() !== undefined) {
