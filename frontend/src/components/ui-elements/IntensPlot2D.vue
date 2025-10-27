@@ -1,4 +1,5 @@
 <template>
+  <div class="intens-plot-internal">
   <div :id="data.name" class="intens-plot" :class="intensClass" v-if="show">
     <div
       v-if="loaded"
@@ -31,6 +32,8 @@
         </button>
       </template>
     </div>
+    </div>
+
     <modal :name="data.base.id + '-CycleModal'" :draggable="true" :resizable="true" width="300px" height="auto">
       <div class="intens-modal">
         <div class="modal-title">Case Dialog</div>
@@ -678,7 +681,7 @@ class IntensPlot2D extends mixins(base) {
   }
 
   initInteract() {
-    let neighbors = Array.from(this.$el.parentElement.parentElement.parentElement.querySelectorAll(".intens-plot"));
+    let neighbors = Array.from(this.$el.parentElement.parentElement.parentElement.querySelectorAll(".intens-plot-internal"));
     // https://gitlab.semafor.ch/alstom/tot/tep2/-/issues/112
     if (this.form.base.Name === "resultPlots_environment_form") neighbors = [];
     neighbors = neighbors.filter(e => e !== this.$el);
@@ -1467,8 +1470,7 @@ export default IntensPlot2D;
 </script>
 
 <style lang="scss">
-.intens-plot {
-  content-visibility: auto;
+.intens-plot-internal {
   .cycles {
     word-wrap: break-word;
     .cycle-titles {
@@ -1532,6 +1534,7 @@ export default IntensPlot2D;
 
   .intens-plot {
     margin: 10px;
+    content-visibility: auto;
     width: max-content;
   }
 
