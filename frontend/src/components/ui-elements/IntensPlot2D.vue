@@ -1,37 +1,37 @@
 <template>
   <div class="intens-plot-internal">
-  <div :id="data.name" class="intens-plot" :class="intensClass" v-if="show">
-    <div
-      v-if="loaded"
-      class="grid"
-      :style="{
-        'grid-template-columns': `${plotWidth}px 20px`,
-        'grid-template-rows': `${plotHeight}px 20px`,
-      }">
-      <iEcharts
-        class="echarts"
-        :option="plot"
-        @contextmenu.native="openCtxMenu"
-        @ready="onReady"
-        @mousedown.native="mousedown"
-        @click.native="exec"
-        @datazoom="datazoom"
-        @restore="() => ins.setOption(plot, {notMerge: false, replaceMerge: ['xAxis', 'yAxis', 'series']})"
-        ref="plot"
-        :style="{ width: plotWidth + 'px', height: plotHeight + 'px' }">
-      </iEcharts>
-      <template v-if="isResizeButtons">
-        <button class="bidirectional-resize" :id="'bidirectional-resize-' + data.base.id">
-          <img alt="resize bi-directional" :src="getBaseUrl() + '/res/bi-resize.png'" />
-        </button>
-        <button class="right-resize" :id="'right-resize-' + data.base.id">
-          <img alt="resize horizontal" :src="getBaseUrl() + '/res/horizontal-resize.png'" />
-        </button>
-        <button class="bottom-resize" :id="'bottom-resize-' + data.base.id">
-          <img alt="resize vertical" :src="getBaseUrl() + '/res/horizontal-resize.png'" />
-        </button>
-      </template>
-    </div>
+    <div :id="data.name" class="intens-plot" :class="intensClass" v-if="show" ref="plotRoot">
+      <div
+        v-if="loaded"
+        class="grid"
+        :style="{
+          'grid-template-columns': `${plotWidth}px 20px`,
+          'grid-template-rows': `${plotHeight}px 20px`,
+        }">
+        <iEcharts
+          class="echarts"
+          :option="plot"
+          @contextmenu.native="openCtxMenu"
+          @ready="onReady"
+          @mousedown.native="mousedown"
+          @click.native="exec"
+          @datazoom="datazoom"
+          @restore="() => ins.setOption(plot, {notMerge: false, replaceMerge: ['xAxis', 'yAxis', 'series']})"
+          ref="plot"
+          :style="{ width: plotWidth + 'px', height: plotHeight + 'px' }">
+        </iEcharts>
+        <template v-if="isResizeButtons">
+          <button class="bidirectional-resize" :id="'bidirectional-resize-' + data.base.id">
+            <img alt="resize bi-directional" :src="getBaseUrl() + '/res/bi-resize.png'" />
+          </button>
+          <button class="right-resize" :id="'right-resize-' + data.base.id">
+            <img alt="resize horizontal" :src="getBaseUrl() + '/res/horizontal-resize.png'" />
+          </button>
+          <button class="bottom-resize" :id="'bottom-resize-' + data.base.id">
+            <img alt="resize vertical" :src="getBaseUrl() + '/res/horizontal-resize.png'" />
+          </button>
+        </template>
+      </div>
     </div>
 
     <modal :name="data.base.id + '-CycleModal'" :draggable="true" :resizable="true" width="300px" height="auto">
@@ -304,12 +304,12 @@ class IntensPlot2D extends mixins(base) {
   mounted() {
     const loader = ({skipped}) => {
       if (skipped) return
-        this.$el.removeEventListener("contentvisibilityautostatechange", loader)
+        this.$refs.plotRoot.removeEventListener("contentvisibilityautostatechange", loader)
         this.loaded = true
         setImmediate(this.fullMounted)
     }
-    if (!this.$el.checkVisibility({visibilityProperty: true})) {
-      this.$el.addEventListener("contentvisibilityautostatechange", loader)
+    if (!this.$refs.plotRoot.checkVisibility({visibilityProperty: true})) {
+      this.$refs.plotRoot.addEventListener("contentvisibilityautostatechange", loader)
       return
     } else {
       loader(false)
