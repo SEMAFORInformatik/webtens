@@ -297,7 +297,7 @@ export default class BaseComponent extends Vue {
       this.$store.commit("setClipboard", r.clipboard);
     }
 
-    if (r.formsReplaced.length) {
+    if (r.formsReplaced?.length) {
       r.formsReplaced.forEach(form => this.$intens.addForm(form, true))
     }
     // replace with resolve() as soon as icon isnt needed anymore in response
