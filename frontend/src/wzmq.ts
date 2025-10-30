@@ -337,7 +337,7 @@ export default class ZMQ {
       const id = {}
       otel.propagation.inject(otel.context.active(), id);
       console.debug("sendFile called with file.type", file.type);
-      if (file.type == "application/gzip" || file.type == "application/zip" || file.type == "application/x-gzip") {
+      if (file.type == "application/gzip" || file.type == "application/zip" || file.type == "application/x-gzip" || file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
         // all binary data
         this.sio.emit(socketName, id, eventFile.data);
       } else {
