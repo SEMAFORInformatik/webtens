@@ -9,10 +9,9 @@
           :keysubTitle="name"
           :title="name"
           :key="name"
-          :disabled="Object.values(forms).reduce((a, b) => a || b.form.modal, false) ? !form.form.modal : false"
-          >
+          :disabled="isTabDisabled(form, name)">
           <div slot="title"><a @click="changeTab(String(name))"
-            :class="{disabled: Object.values(forms).reduce((a, b) => a || b.form.modal, false) ? form.form.modal : false}"
+            :class="{disabled: isTabDisabled(form, name)}"
             :key="form.form.title" class="a-tabs">{{ form.form.title }}</a>
           </div>
           <div class="intens-form" :id="name" :key="name + form.updateIndex">
@@ -309,6 +308,12 @@ export default class MainApp extends mixins(base) {
   async abort() {
     await this.abortProgressDialog();
     this.$intens.hidePopup();
+  }
+
+  isTabDisabled(form: in_proto.Form, name: string) {
+    return Object.values(this.forms).reduce((a, b) => a || b.form.modal, false)
+          ? Object.keys(this.forms).findLast(key => this.forms[key].form.modal) !== name
+          : false
   }
 }
 </script>
