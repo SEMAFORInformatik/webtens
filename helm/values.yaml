@@ -7,6 +7,11 @@ image:
   tag: ""
 
 
+# imageCredentials:
+#   registry:
+#   username:
+#   password:
+
 nameOverride: ""
 fullnameOverride: ""
 

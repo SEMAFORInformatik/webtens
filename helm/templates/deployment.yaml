@@ -145,5 +145,7 @@ spec:
                 path: {{ $key }}
               {{ end }}
       {{ end }}
+      {{- if .Values.imageCredentials }}
       imagePullSecrets:
         - name: {{ include "webtens.fullname" . }}-registry
+      {{ end }}
