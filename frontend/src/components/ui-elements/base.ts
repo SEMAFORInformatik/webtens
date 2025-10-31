@@ -396,8 +396,8 @@ export default class BaseComponent extends Vue {
   getElementData(ref: in_proto.IElementRef) {
     if (!ref) return
     const ele = this.$intens.uiEles[ref.id];
-    if (!ele) console.log(this, ref)
-    return ele
+    if (!ele) console.warn("Element not found", this, ref)
+    return ele || {}
   }
 
   typeToString(type: in_proto.GuiElement.Type): string {
