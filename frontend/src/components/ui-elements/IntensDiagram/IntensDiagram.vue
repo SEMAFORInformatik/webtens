@@ -633,7 +633,7 @@ class IntensDiagram extends mixins(base) {
     let menu: CtxOption[] = [];
     if (value?.elements && type == t.CtxMenu.Name) {
       for (const _button of value.elements) {
-        const button = _button.action ? _button : this.getElementData(_button)
+        const button = _button.action ? _button : this.getElementData(_button) || {}
         console.log(button)
         menu.push({
           label: button.label,
