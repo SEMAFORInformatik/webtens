@@ -67,12 +67,12 @@ class IntensTable extends mixins(base) {
   img_corner = this.getBaseUrl() + "/res/table_corner.png";
 
   created() {
+    this.getNewValue(this.data);
     this.$ids.addComponent(this);
   }
 
   // TODO: Find proper fix for the virtual scroll starting higher before first scroll
   mounted() {
-    this.getNewValue(this.data);
     setTimeout(() => this.workaroundPixel = 0, 1000)
   }
 
