@@ -3,6 +3,6 @@ name: webtens
 description: web frontend for intens
 type: application
 
-version: "1.5.0"
+version: "1.5.1"
 
 appVersion: "1.4.3"
