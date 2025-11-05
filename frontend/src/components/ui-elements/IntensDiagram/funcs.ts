@@ -66,83 +66,33 @@ export function drawNodes(
 
 /** Draw the connections in fabricjs */
 export function drawConnections(canvas: fabric.Canvas, connections: in_proto.IConnection[],
-                                connectionsAttrs: in_proto.IConnectionAttr[], diagram_connection_ratio: number) {
-  //console.debug("connection ratio:", diagram_connection_ratio)
-  for (const i in connections) {
-    const connection = connections[i];
-    const connectionAttrs = connectionsAttrs[i];
-    const objs = canvas.getObjects();
-    const n1 = matchNodeName(objs, connection.a);
-    const n2 = matchNodeName(objs, connection.b);
-    if (!n1 || !n2) continue
-    let xdiff = n2.left - n1.left;
-    let ydiff = n2.top - n1.top;
-    let startNode = n1;
-    let endNode = n2;
-    // maintain data
-    if (n1.width == 1) n1.width = 0;
-    if (n1.height == 1) n1.height = 0;
-    if (n2.width == 1) n2.width = 0;
-    if (n2.height == 1) n2.height = 0;
-    // find node points
-    let x1pos=0, x2pos=0, y1pos=0, y2pos=0;
-    let xConnection;
-    if (Math.abs(xdiff) >= diagram_connection_ratio * (Math.abs(ydiff))) {
-      xConnection = true;
-      if (n1.left < n2.left) {
-        x1pos = n1.left + (n1.left < n2.left ?  n1.width : 0);
-        y1pos = n1.top + n1.height/2;
-        x2pos = n2.left + (n1.left > n2.left ?  n2.width : 0);
-        y2pos = n2.top + n2.height/2;
-      } else {
-        x1pos = n2.left + n2.width;
-        y1pos = n2.top + n2.height/2;
-        x2pos = n1.left;
-        y2pos = n1.top + n1.height/2;
+                                connectionsAttrs: in_proto.IConnectionAttr[]) {
+    //console.debug("connectionsAttrs: ", connectionsAttrs)
+    for (const i in connections) {
+      const connection = connections[i];
+      const connectionAttrs = connectionsAttrs[i];
+      const objs = canvas.getObjects();
+      const startNode = matchNodeName(objs, connection.a);
+      const endNode = matchNodeName(objs, connection.b);
+      if (connectionAttrs.lineVectors) {
+        for (let i = 1; i < connectionAttrs.lineVectors.length; i++) {
+          let coords = {
+          x1:connectionAttrs.lineVectors[i-1].x,
+          y1:connectionAttrs.lineVectors[i-1].y,
+          x2:connectionAttrs.lineVectors[i].x,
+          y2:connectionAttrs.lineVectors[i].y};
+          const group = createConnection(coords, startNode.name, endNode.name, connectionAttrs);
+        canvas.add(group);
       }
-    } else {
-      xConnection = false ;
-      if (n1.top < n2.top) {
-        x1pos = n1.left + n1.width/2;
-        y1pos = n1.top + n1.height;
-        x2pos = n2.left + n2.width/2;
-        y2pos = n2.top;
-      } else {
-        x1pos = n2.left + n2.width/2;
-        y1pos = n2.top  + n2.height;
-        x2pos = n1.left + n1.width/2;
-        y2pos = n1.top;
-      }
-    }
-
-    if ((startNode && endNode) || connectionAttrs.lineVectors) {
-      let coords: t.Coords = connectionAttrs.lineVectors?.length > 0 ? {
-        x1:connectionAttrs.lineVectors[0].x,
-        y1:connectionAttrs.lineVectors[0].y,
-        x2:connectionAttrs.lineVectors[1].x,
-        y2:connectionAttrs.lineVectors[1].y,
-      } : {
-        x1:x1pos,
-        y1:y1pos,
-        x2:x2pos,
-        y2:y2pos,
-      };
-      const size: t.Size = {
-        w: startNode.width,
-        h: startNode.height,
-      };
-      const group = createConnection(coords, startNode.name, endNode.name, size, connectionAttrs, xConnection || connectionAttrs.lineVectors);
-      canvas.add(group);
     }
   }
 }
-
 /** Create a fabric group where the lines are stored */
-export function createConnection(coords: t.Coords, startData: string, endData: string, size: t.Size, attrs: in_proto.IConnectionAttr, xConnection: boolean): fabric.Group {
+   export function createConnection(coords: t.Coords, startData: string, endData: string, attrs: in_proto.IConnectionAttr): fabric.Group {
   let groupElements = [];
-  const path = createPath(coords, size, xConnection);
-  for (let i = 0; i < 3; i++) {
-    const vector = path[i];
+  for (let i = 0; i < 2; i++) {
+    const vector = coords;
+    //console.debug("connection line coord", vector.x1, vector.y1, vector.x2, vector.y2)
     const line = new fabric.Line([vector.x1, vector.y1, vector.x2, vector.y2], {
       stroke: attrs?.lineColor || c.LINE_COLOR,
       strokeWidth: attrs?.lineWidth ?? c.LINE_STROKE_WIDTH,
@@ -150,8 +100,8 @@ export function createConnection(coords: t.Coords, startData: string, endData: s
       selectable: false
     });
     // specical case
-    if (line.strokeWidth >= 1 && path[0].x1 == path[2].x2) {
-      line.originX = 'centerX';
+    if (line.strokeWidth >= 1 && vector.x1 == vector.x2) {
+     line.originX = 'centerX';
     }
     groupElements.push(line);
   }
@@ -161,8 +111,8 @@ export function createConnection(coords: t.Coords, startData: string, endData: s
       start: startData,
       end: endData,
     }),
-    left: Math.min(path[0].x1, path[2].x2),
-    top: Math.min(path[0].y1, path[2].y2),
+    left: Math.min(coords.x1, coords.x2),
+    top: Math.min(coords.y1, coords.y2),
     hasControls: false,
     lockMovementX: true,
     lockMovementY: true,
@@ -233,54 +183,3 @@ export async function deleteConn(canvas: fabric.Canvas, connection: in_proto.ICo
     canvasFuncs[1]();
   }
 }
-
-/** Create a connection that looks line a connection in the desktop diagram application */
-export function createPath(pos: t.Coords, size: t.Size, xConnection:boolean): t.PathCoords {
-  const { x1, y1, x2, y2 } = pos;
-  const diffX = Math.max(x1, x2) - Math.min(x1, x2);
-  const diffY = Math.max(y1, y2) - Math.min(y1, y2);
-  const diffX2 = diffX / 2;
-  const diffY2 = diffY / 2;
-  if (xConnection) {
-    let v1 = {
-      x1: x1,
-      y1: y1,
-      x2: x1 + diffX2,
-      y2: y1,
-    };
-    let v2 = {
-      x1: x1 + diffX2,
-      y1: y1,
-      x2: x1 + diffX2,
-      y2: y2,
-    };
-    let v3 = {
-      x1: x1 + diffX2,
-      y1: y2,
-      x2: x2,
-      y2: y2,
-    };
-    return [v1, v2, v3];
-  } else {
-    let v1 = {
-      x1: x1,
-      y1: y1,
-      x2: x1,
-      y2: y1 + diffY2,
-    };
-    let v2 = {
-      x1: x2,
-      y1: y1 + diffY2,
-      x2: x1,
-      y2: y1 + diffY2,
-    };
-    let v3 = {
-      x1: x2,
-      y1: y1 + diffY2,
-      x2: x2,
-      y2: y2,
-    };
-    return [v1, v2, v3];
-  }
-}
-

@@ -301,7 +301,7 @@ class IntensDiagram extends mixins(base) {
           this.canvas.remove(object)
         }
       });
-      f.drawConnections(this.canvas, this.connections, this.connectionsAttr, this.diagram_connection_ratio);
+      f.drawConnections(this.canvas, this.connections, this.connectionsAttr);
     });
     canvas.on("mouse:up", async (ev) => {
       this.setMiddleClick(false, ev, "fabric");
@@ -423,7 +423,7 @@ class IntensDiagram extends mixins(base) {
         });
         this.unlockCanvas()
         canvas.renderAll();
-        f.drawConnections(this.canvas, this.connections, this.connectionsAttr, this.diagram_connection_ratio);
+        f.drawConnections(this.canvas, this.connections, this.connectionsAttr);
       }
     });
     this.canvas = canvas;
@@ -533,7 +533,7 @@ class IntensDiagram extends mixins(base) {
     // wait 10 ms to render all the nodes
     await f.sleep(10);
     // draw the connections
-    f.drawConnections(this.canvas, this.connections, this.connectionsAttr, this.diagram_connection_ratio);
+    f.drawConnections(this.canvas, this.connections, this.connectionsAttr);
     // bring all images to front of the stack and set selection
     let selectionImgs = [];
     for (const obj of this.canvas.getObjects()) {
