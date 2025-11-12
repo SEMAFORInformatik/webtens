@@ -88,31 +88,56 @@ export function drawConnections(canvas: fabric.Canvas, connections: in_proto.ICo
   }
 }
 /** Create a fabric group where the lines are stored */
-   export function createConnection(coords: t.Coords, startData: string, endData: string, attrs: in_proto.IConnectionAttr): fabric.Group {
-  let groupElements = [];
-  for (let i = 0; i < 2; i++) {
-    const vector = coords;
-    //console.debug("connection line coord", vector.x1, vector.y1, vector.x2, vector.y2)
-    const line = new fabric.Line([vector.x1, vector.y1, vector.x2, vector.y2], {
-      stroke: attrs?.lineColor || c.LINE_COLOR,
-      strokeWidth: attrs?.lineWidth ?? c.LINE_STROKE_WIDTH,
-      strokeDashArray: attrs?.lineStyle === "DotLine" ? [2] : [],
-      selectable: false
-    });
-    // specical case
-    if (line.strokeWidth >= 1 && vector.x1 == vector.x2) {
-     line.originX = 'centerX';
-    }
-    groupElements.push(line);
+export function createConnection(coords: t.Coords, startData: string, endData: string, attrs: in_proto.IConnectionAttr): fabric.Group {
+  const strokeWidth = attrs?.lineWidth ?? c.LINE_STROKE_WIDTH;
+  enum Angles {
+    HORIZONTAL,
+    VERTICAL,
+    NONE
+  }
+  const rightAngle = coords.x1 === coords.x2 ? Angles.VERTICAL
+    : coords.y1 === coords.y2 ? Angles.HORIZONTAL
+    : Angles.NONE;
+  const halfStroke = Math.floor(strokeWidth / 2)
+
+  const vector = {
+    // if we got a horizontal line, we want it to stand out a tiny bit in each direction based on the stroke width
+    // the sign operation is to determine if we're on the left or right end of the line
+    x1: rightAngle === Angles.HORIZONTAL
+      ? coords.x1 + halfStroke * Math.sign(coords.x1 - coords.x2)
+      : coords.x1,
+    x2: rightAngle === Angles.HORIZONTAL
+      ? coords.x2 + halfStroke * Math.sign(coords.x2 - coords.x1)
+      : coords.x2,
+    y1: rightAngle === Angles.VERTICAL
+      ? coords.y1 + halfStroke * Math.sign(coords.y1 - coords.y2)
+      : coords.y1,
+    y2: rightAngle === Angles.VERTICAL
+      ? coords.y2 + halfStroke * Math.sign(coords.y2 - coords.y1)
+      : coords.y2,
+  };
+  //console.debug("connection line coord", vector.x1, vector.y1, vector.x2, vector.y2)
+  const line = new fabric.Line([vector.x1, vector.y1, vector.x2, vector.y2], {
+    stroke: attrs?.lineColor || c.LINE_COLOR,
+    strokeWidth,
+    strokeDashArray: attrs?.lineStyle === "DotLine" ? [2] : [],
+    selectable: false
+  });
+  // specical case
+  if (line.strokeWidth >= 1 && rightAngle === Angles.VERTICAL) {
+    line.originX = 'center';
+  }
+  if (line.strokeWidth >= 1 && rightAngle === Angles.HORIZONTAL) {
+    line.originY = "center"
   }
 
-  const group = new fabric.Group(groupElements, {
+  const group = new fabric.Group([line], {
     name: JSON.stringify({
       start: startData,
       end: endData,
     }),
-    left: Math.min(coords.x1, coords.x2),
-    top: Math.min(coords.y1, coords.y2),
+    left: Math.min(vector.x1, vector.x2),
+    top: Math.min(vector.y1, vector.y2),
     hasControls: false,
     lockMovementX: true,
     lockMovementY: true,
