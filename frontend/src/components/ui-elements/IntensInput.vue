@@ -129,12 +129,12 @@ class IntensInput extends mixins(base) {
   }
   setEditValue() {
     if (this.data.value.datatype == in_proto.ValueInfo.DataType.Double) {
-      let deli = '.';
-      if (this.currentValue.toString().indexOf(',') > 0) deli = ',';
+      let delim = '.';
+      if (this.currentValue.toString().indexOf(',') > 0) delim = ',';
       let svalue = this.rawValue as string;
       let value = parseFloat(svalue) * this.scale;
 
-      this.currentValue = String(Number(value.toPrecision(12)))
+      this.currentValue = String(Number(value.toPrecision(12))).replaceAll(".", delim)
       // special cases
       if (Number.isNaN(value)) this.currentValue = "";
       if (value === 0) this.currentValue = "0";
