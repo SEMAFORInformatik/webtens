@@ -133,20 +133,8 @@ class IntensInput extends mixins(base) {
       if (this.currentValue.toString().indexOf(',') > 0) deli = ',';
       let svalue = this.rawValue as string;
       let value = parseFloat(svalue) * this.scale;
-      let valueStr = value.toString();
 
-      // 1.200000000000012 => 1.2000000000000
-      let delPos = this.currentValue.toString().indexOf(deli);
-      if (delPos >= 0 && delPos < valueStr.length-8) {
-        if (valueStr.length > 10 && valueStr[valueStr.length-8] == "000000") valueStr = valueStr.substr(0, valueStr.length-2);
-      }
-      // remove trailing 0, replace delimiter
-      this.currentValue = valueStr.replace(new RegExp("[0]*$"), '').replace('.', deli);
-      //
-      if (this.currentValue.toString().indexOf(deli) < 0) {
-        while(this.currentValue.length < valueStr.length) {this.currentValue += '0';}
-      }
-
+      this.currentValue = String(Number(value.toPrecision(12)))
       // special cases
       if (Number.isNaN(value)) this.currentValue = "";
       if (value === 0) this.currentValue = "0";

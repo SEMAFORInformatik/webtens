@@ -57,7 +57,7 @@ spec:
             - name: CONTAINER_TYPE
               value: "{{ .Values.appType }}"
             {{- else }}
-            {{ fail `appType not set. Please set the appType value to the name you set in the config-controller's intensApps key.`}}
+            {{ fail `appType not set. Please set the appType value to the name of your application as recognized by the config-controller.`}}
             {{- end }}
             {{- if .Values.hideControlBar }}
             - name: HIDE_CONTROL_BAR
