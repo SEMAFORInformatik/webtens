@@ -553,7 +553,8 @@ export namespace in_proto {
             ETableToggleDataItem = 41,
             ETableColorPickerDataItem = 42,
             ETableButtonDataItem = 43,
-            ECycleButton = 44
+            ECycleButton = 44,
+            EProgressbar = 45
         }
 
         /** Orientation enum. */
@@ -1552,6 +1553,12 @@ export namespace in_proto {
 
         /** FieldGroup lines */
         lines?: (in_proto.IFieldGroupLine[]|null);
+
+        /** FieldGroup overlay */
+        overlay?: (in_proto.FieldGroup.IOverlayGeometry|null);
+
+        /** FieldGroup scrollbars */
+        scrollbars?: (boolean|null);
     }
 
     /** Represents a FieldGroup. */
@@ -1583,6 +1590,12 @@ export namespace in_proto {
 
         /** FieldGroup lines. */
         public lines: in_proto.IFieldGroupLine[];
+
+        /** FieldGroup overlay. */
+        public overlay?: (in_proto.FieldGroup.IOverlayGeometry|null);
+
+        /** FieldGroup scrollbars. */
+        public scrollbars: boolean;
 
         /**
          * Creates a new FieldGroup instance using the specified properties.
@@ -1755,6 +1768,121 @@ export namespace in_proto {
 
             /**
              * Gets the default type url for GridTemplateField
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of an OverlayGeometry. */
+        interface IOverlayGeometry {
+
+            /** OverlayGeometry x */
+            x?: (number|null);
+
+            /** OverlayGeometry y */
+            y?: (number|null);
+
+            /** OverlayGeometry width */
+            width?: (number|null);
+
+            /** OverlayGeometry height */
+            height?: (number|null);
+        }
+
+        /** Represents an OverlayGeometry. */
+        class OverlayGeometry implements IOverlayGeometry {
+
+            /**
+             * Constructs a new OverlayGeometry.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: in_proto.FieldGroup.IOverlayGeometry);
+
+            /** OverlayGeometry x. */
+            public x: number;
+
+            /** OverlayGeometry y. */
+            public y: number;
+
+            /** OverlayGeometry width. */
+            public width: number;
+
+            /** OverlayGeometry height. */
+            public height: number;
+
+            /**
+             * Creates a new OverlayGeometry instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns OverlayGeometry instance
+             */
+            public static create(properties?: in_proto.FieldGroup.IOverlayGeometry): in_proto.FieldGroup.OverlayGeometry;
+
+            /**
+             * Encodes the specified OverlayGeometry message. Does not implicitly {@link in_proto.FieldGroup.OverlayGeometry.verify|verify} messages.
+             * @param message OverlayGeometry message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: in_proto.FieldGroup.IOverlayGeometry, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified OverlayGeometry message, length delimited. Does not implicitly {@link in_proto.FieldGroup.OverlayGeometry.verify|verify} messages.
+             * @param message OverlayGeometry message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: in_proto.FieldGroup.IOverlayGeometry, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes an OverlayGeometry message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns OverlayGeometry
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): in_proto.FieldGroup.OverlayGeometry;
+
+            /**
+             * Decodes an OverlayGeometry message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns OverlayGeometry
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): in_proto.FieldGroup.OverlayGeometry;
+
+            /**
+             * Verifies an OverlayGeometry message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates an OverlayGeometry message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns OverlayGeometry
+             */
+            public static fromObject(object: { [k: string]: any }): in_proto.FieldGroup.OverlayGeometry;
+
+            /**
+             * Creates a plain object from an OverlayGeometry message. Also converts values to other types if specified.
+             * @param message OverlayGeometry
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: in_proto.FieldGroup.OverlayGeometry, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this OverlayGeometry to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for OverlayGeometry
              * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns The default type url
              */
@@ -5470,9 +5598,6 @@ export namespace in_proto {
         /** Navigator expandable */
         expandable?: (boolean|null);
 
-        /** Navigator scrollable */
-        scrollable?: (boolean|null);
-
         /** Navigator root */
         root?: (in_proto.INavigatorNode|null);
 
@@ -5493,6 +5618,9 @@ export namespace in_proto {
 
         /** Navigator selectItems */
         selectItems?: (string[]|null);
+
+        /** Navigator scrollable */
+        scrollable?: (boolean|null);
     }
 
     /** Represents a Navigator. */
@@ -5522,9 +5650,6 @@ export namespace in_proto {
         /** Navigator expandable. */
         public expandable: boolean;
 
-        /** Navigator scrollable. */
-        public scrollable: boolean;
-
         /** Navigator root. */
         public root?: (in_proto.INavigatorNode|null);
 
@@ -5545,6 +5670,9 @@ export namespace in_proto {
 
         /** Navigator selectItems. */
         public selectItems: string[];
+
+        /** Navigator scrollable. */
+        public scrollable: boolean;
 
         /**
          * Creates a new Navigator instance using the specified properties.
@@ -7605,6 +7733,109 @@ export namespace in_proto {
 
         /**
          * Gets the default type url for Void
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a Progressbar. */
+    interface IProgressbar {
+
+        /** Progressbar base */
+        base?: (in_proto.IGuiElement|null);
+
+        /** Progressbar percent */
+        percent?: (number|null);
+    }
+
+    /** Represents a Progressbar. */
+    class Progressbar implements IProgressbar {
+
+        /**
+         * Constructs a new Progressbar.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: in_proto.IProgressbar);
+
+        /** Progressbar base. */
+        public base?: (in_proto.IGuiElement|null);
+
+        /** Progressbar percent. */
+        public percent: number;
+
+        /**
+         * Creates a new Progressbar instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns Progressbar instance
+         */
+        public static create(properties?: in_proto.IProgressbar): in_proto.Progressbar;
+
+        /**
+         * Encodes the specified Progressbar message. Does not implicitly {@link in_proto.Progressbar.verify|verify} messages.
+         * @param message Progressbar message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: in_proto.IProgressbar, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified Progressbar message, length delimited. Does not implicitly {@link in_proto.Progressbar.verify|verify} messages.
+         * @param message Progressbar message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: in_proto.IProgressbar, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a Progressbar message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns Progressbar
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): in_proto.Progressbar;
+
+        /**
+         * Decodes a Progressbar message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns Progressbar
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): in_proto.Progressbar;
+
+        /**
+         * Verifies a Progressbar message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a Progressbar message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns Progressbar
+         */
+        public static fromObject(object: { [k: string]: any }): in_proto.Progressbar;
+
+        /**
+         * Creates a plain object from a Progressbar message. Also converts values to other types if specified.
+         * @param message Progressbar
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: in_proto.Progressbar, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this Progressbar to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for Progressbar
          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns The default type url
          */

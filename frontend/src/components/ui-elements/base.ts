@@ -478,6 +478,8 @@ export default class BaseComponent extends Vue {
         return "MenuToggle"
       case in_proto.GuiElement.Type.ECycleButton:
         return "Cycle_Button"
+      case in_proto.GuiElement.Type.EProgressbar:
+        return "Progressbar"
     }
   }
   getCompId = ele => ele.id || ele.base?.id || ele.base?.base?.id || ele.field?.base?.id;

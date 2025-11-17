@@ -770,6 +770,7 @@ export const in_proto = $root.in_proto = (() => {
                 case 42:
                 case 43:
                 case 44:
+                case 45:
                     break;
                 }
             return null;
@@ -975,6 +976,10 @@ export const in_proto = $root.in_proto = (() => {
             case "ECycleButton":
             case 44:
                 message.type = 44;
+                break;
+            case "EProgressbar":
+            case 45:
+                message.type = 45;
                 break;
             }
             return message;
@@ -1396,6 +1401,7 @@ export const in_proto = $root.in_proto = (() => {
                 case 42:
                 case 43:
                 case 44:
+                case 45:
                     break;
                 }
             if (message.Name != null && message.hasOwnProperty("Name"))
@@ -1653,6 +1659,10 @@ export const in_proto = $root.in_proto = (() => {
             case 44:
                 message.type = 44;
                 break;
+            case "EProgressbar":
+            case 45:
+                message.type = 45;
+                break;
             }
             if (object.Name != null)
                 message.Name = String(object.Name);
@@ -1871,6 +1881,7 @@ export const in_proto = $root.in_proto = (() => {
          * @property {number} ETableColorPickerDataItem=42 ETableColorPickerDataItem value
          * @property {number} ETableButtonDataItem=43 ETableButtonDataItem value
          * @property {number} ECycleButton=44 ECycleButton value
+         * @property {number} EProgressbar=45 EProgressbar value
          */
         GuiElement.Type = (function() {
             const valuesById = {}, values = Object.create(valuesById);
@@ -1919,6 +1930,7 @@ export const in_proto = $root.in_proto = (() => {
             values[valuesById[42] = "ETableColorPickerDataItem"] = 42;
             values[valuesById[43] = "ETableButtonDataItem"] = 43;
             values[valuesById[44] = "ECycleButton"] = 44;
+            values[valuesById[45] = "EProgressbar"] = 45;
             return values;
         })();
 
@@ -4629,6 +4641,8 @@ export const in_proto = $root.in_proto = (() => {
          * @property {boolean|null} [frame] FieldGroup frame
          * @property {Array.<in_proto.FieldGroup.IGridTemplateField>|null} [gridTemplateColumns] FieldGroup gridTemplateColumns
          * @property {Array.<in_proto.IFieldGroupLine>|null} [lines] FieldGroup lines
+         * @property {in_proto.FieldGroup.IOverlayGeometry|null} [overlay] FieldGroup overlay
+         * @property {boolean|null} [scrollbars] FieldGroup scrollbars
          */
 
         /**
@@ -4705,6 +4719,22 @@ export const in_proto = $root.in_proto = (() => {
         FieldGroup.prototype.lines = $util.emptyArray;
 
         /**
+         * FieldGroup overlay.
+         * @member {in_proto.FieldGroup.IOverlayGeometry|null|undefined} overlay
+         * @memberof in_proto.FieldGroup
+         * @instance
+         */
+        FieldGroup.prototype.overlay = null;
+
+        /**
+         * FieldGroup scrollbars.
+         * @member {boolean} scrollbars
+         * @memberof in_proto.FieldGroup
+         * @instance
+         */
+        FieldGroup.prototype.scrollbars = false;
+
+        /**
          * Creates a new FieldGroup instance using the specified properties.
          * @function create
          * @memberof in_proto.FieldGroup
@@ -4744,6 +4774,10 @@ export const in_proto = $root.in_proto = (() => {
             if (message.lines != null && message.lines.length)
                 for (let i = 0; i < message.lines.length; ++i)
                     $root.in_proto.FieldGroupLine.encode(message.lines[i], writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+            if (message.overlay != null && Object.hasOwnProperty.call(message, "overlay"))
+                $root.in_proto.FieldGroup.OverlayGeometry.encode(message.overlay, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+            if (message.scrollbars != null && Object.hasOwnProperty.call(message, "scrollbars"))
+                writer.uint32(/* id 9, wireType 0 =*/72).bool(message.scrollbars);
             return writer;
         };
 
@@ -4808,6 +4842,14 @@ export const in_proto = $root.in_proto = (() => {
                         if (!(message.lines && message.lines.length))
                             message.lines = [];
                         message.lines.push($root.in_proto.FieldGroupLine.decode(reader, reader.uint32()));
+                        break;
+                    }
+                case 8: {
+                        message.overlay = $root.in_proto.FieldGroup.OverlayGeometry.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 9: {
+                        message.scrollbars = reader.bool();
                         break;
                     }
                 default:
@@ -4898,6 +4940,14 @@ export const in_proto = $root.in_proto = (() => {
                         return "lines." + error;
                 }
             }
+            if (message.overlay != null && message.hasOwnProperty("overlay")) {
+                let error = $root.in_proto.FieldGroup.OverlayGeometry.verify(message.overlay);
+                if (error)
+                    return "overlay." + error;
+            }
+            if (message.scrollbars != null && message.hasOwnProperty("scrollbars"))
+                if (typeof message.scrollbars !== "boolean")
+                    return "scrollbars: boolean expected";
             return null;
         };
 
@@ -5006,6 +5056,13 @@ export const in_proto = $root.in_proto = (() => {
                     message.lines[i] = $root.in_proto.FieldGroupLine.fromObject(object.lines[i]);
                 }
             }
+            if (object.overlay != null) {
+                if (typeof object.overlay !== "object")
+                    throw TypeError(".in_proto.FieldGroup.overlay: object expected");
+                message.overlay = $root.in_proto.FieldGroup.OverlayGeometry.fromObject(object.overlay);
+            }
+            if (object.scrollbars != null)
+                message.scrollbars = Boolean(object.scrollbars);
             return message;
         };
 
@@ -5032,6 +5089,8 @@ export const in_proto = $root.in_proto = (() => {
                 object.labelAlignment = options.enums === String ? "Default" : 0;
                 object.orientation = options.enums === String ? "None" : 0;
                 object.frame = false;
+                object.overlay = null;
+                object.scrollbars = false;
             }
             if (message.base != null && message.hasOwnProperty("base"))
                 object.base = $root.in_proto.GuiElement.toObject(message.base, options);
@@ -5053,6 +5112,10 @@ export const in_proto = $root.in_proto = (() => {
                 for (let j = 0; j < message.lines.length; ++j)
                     object.lines[j] = $root.in_proto.FieldGroupLine.toObject(message.lines[j], options);
             }
+            if (message.overlay != null && message.hasOwnProperty("overlay"))
+                object.overlay = $root.in_proto.FieldGroup.OverlayGeometry.toObject(message.overlay, options);
+            if (message.scrollbars != null && message.hasOwnProperty("scrollbars"))
+                object.scrollbars = message.scrollbars;
             return object;
         };
 
@@ -5283,6 +5346,279 @@ export const in_proto = $root.in_proto = (() => {
             };
 
             return GridTemplateField;
+        })();
+
+        FieldGroup.OverlayGeometry = (function() {
+
+            /**
+             * Properties of an OverlayGeometry.
+             * @memberof in_proto.FieldGroup
+             * @interface IOverlayGeometry
+             * @property {number|null} [x] OverlayGeometry x
+             * @property {number|null} [y] OverlayGeometry y
+             * @property {number|null} [width] OverlayGeometry width
+             * @property {number|null} [height] OverlayGeometry height
+             */
+
+            /**
+             * Constructs a new OverlayGeometry.
+             * @memberof in_proto.FieldGroup
+             * @classdesc Represents an OverlayGeometry.
+             * @implements IOverlayGeometry
+             * @constructor
+             * @param {in_proto.FieldGroup.IOverlayGeometry=} [properties] Properties to set
+             */
+            function OverlayGeometry(properties) {
+                if (properties)
+                    for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * OverlayGeometry x.
+             * @member {number} x
+             * @memberof in_proto.FieldGroup.OverlayGeometry
+             * @instance
+             */
+            OverlayGeometry.prototype.x = 0;
+
+            /**
+             * OverlayGeometry y.
+             * @member {number} y
+             * @memberof in_proto.FieldGroup.OverlayGeometry
+             * @instance
+             */
+            OverlayGeometry.prototype.y = 0;
+
+            /**
+             * OverlayGeometry width.
+             * @member {number} width
+             * @memberof in_proto.FieldGroup.OverlayGeometry
+             * @instance
+             */
+            OverlayGeometry.prototype.width = 0;
+
+            /**
+             * OverlayGeometry height.
+             * @member {number} height
+             * @memberof in_proto.FieldGroup.OverlayGeometry
+             * @instance
+             */
+            OverlayGeometry.prototype.height = 0;
+
+            /**
+             * Creates a new OverlayGeometry instance using the specified properties.
+             * @function create
+             * @memberof in_proto.FieldGroup.OverlayGeometry
+             * @static
+             * @param {in_proto.FieldGroup.IOverlayGeometry=} [properties] Properties to set
+             * @returns {in_proto.FieldGroup.OverlayGeometry} OverlayGeometry instance
+             */
+            OverlayGeometry.create = function create(properties) {
+                return new OverlayGeometry(properties);
+            };
+
+            /**
+             * Encodes the specified OverlayGeometry message. Does not implicitly {@link in_proto.FieldGroup.OverlayGeometry.verify|verify} messages.
+             * @function encode
+             * @memberof in_proto.FieldGroup.OverlayGeometry
+             * @static
+             * @param {in_proto.FieldGroup.IOverlayGeometry} message OverlayGeometry message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            OverlayGeometry.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.x != null && Object.hasOwnProperty.call(message, "x"))
+                    writer.uint32(/* id 1, wireType 5 =*/13).float(message.x);
+                if (message.y != null && Object.hasOwnProperty.call(message, "y"))
+                    writer.uint32(/* id 2, wireType 5 =*/21).float(message.y);
+                if (message.width != null && Object.hasOwnProperty.call(message, "width"))
+                    writer.uint32(/* id 3, wireType 5 =*/29).float(message.width);
+                if (message.height != null && Object.hasOwnProperty.call(message, "height"))
+                    writer.uint32(/* id 4, wireType 5 =*/37).float(message.height);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified OverlayGeometry message, length delimited. Does not implicitly {@link in_proto.FieldGroup.OverlayGeometry.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof in_proto.FieldGroup.OverlayGeometry
+             * @static
+             * @param {in_proto.FieldGroup.IOverlayGeometry} message OverlayGeometry message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            OverlayGeometry.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes an OverlayGeometry message from the specified reader or buffer.
+             * @function decode
+             * @memberof in_proto.FieldGroup.OverlayGeometry
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {in_proto.FieldGroup.OverlayGeometry} OverlayGeometry
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            OverlayGeometry.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                let end = length === undefined ? reader.len : reader.pos + length, message = new $root.in_proto.FieldGroup.OverlayGeometry();
+                while (reader.pos < end) {
+                    let tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1: {
+                            message.x = reader.float();
+                            break;
+                        }
+                    case 2: {
+                            message.y = reader.float();
+                            break;
+                        }
+                    case 3: {
+                            message.width = reader.float();
+                            break;
+                        }
+                    case 4: {
+                            message.height = reader.float();
+                            break;
+                        }
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes an OverlayGeometry message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof in_proto.FieldGroup.OverlayGeometry
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {in_proto.FieldGroup.OverlayGeometry} OverlayGeometry
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            OverlayGeometry.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies an OverlayGeometry message.
+             * @function verify
+             * @memberof in_proto.FieldGroup.OverlayGeometry
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            OverlayGeometry.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.x != null && message.hasOwnProperty("x"))
+                    if (typeof message.x !== "number")
+                        return "x: number expected";
+                if (message.y != null && message.hasOwnProperty("y"))
+                    if (typeof message.y !== "number")
+                        return "y: number expected";
+                if (message.width != null && message.hasOwnProperty("width"))
+                    if (typeof message.width !== "number")
+                        return "width: number expected";
+                if (message.height != null && message.hasOwnProperty("height"))
+                    if (typeof message.height !== "number")
+                        return "height: number expected";
+                return null;
+            };
+
+            /**
+             * Creates an OverlayGeometry message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof in_proto.FieldGroup.OverlayGeometry
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {in_proto.FieldGroup.OverlayGeometry} OverlayGeometry
+             */
+            OverlayGeometry.fromObject = function fromObject(object) {
+                if (object instanceof $root.in_proto.FieldGroup.OverlayGeometry)
+                    return object;
+                let message = new $root.in_proto.FieldGroup.OverlayGeometry();
+                if (object.x != null)
+                    message.x = Number(object.x);
+                if (object.y != null)
+                    message.y = Number(object.y);
+                if (object.width != null)
+                    message.width = Number(object.width);
+                if (object.height != null)
+                    message.height = Number(object.height);
+                return message;
+            };
+
+            /**
+             * Creates a plain object from an OverlayGeometry message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof in_proto.FieldGroup.OverlayGeometry
+             * @static
+             * @param {in_proto.FieldGroup.OverlayGeometry} message OverlayGeometry
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            OverlayGeometry.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                let object = {};
+                if (options.defaults) {
+                    object.x = 0;
+                    object.y = 0;
+                    object.width = 0;
+                    object.height = 0;
+                }
+                if (message.x != null && message.hasOwnProperty("x"))
+                    object.x = options.json && !isFinite(message.x) ? String(message.x) : message.x;
+                if (message.y != null && message.hasOwnProperty("y"))
+                    object.y = options.json && !isFinite(message.y) ? String(message.y) : message.y;
+                if (message.width != null && message.hasOwnProperty("width"))
+                    object.width = options.json && !isFinite(message.width) ? String(message.width) : message.width;
+                if (message.height != null && message.hasOwnProperty("height"))
+                    object.height = options.json && !isFinite(message.height) ? String(message.height) : message.height;
+                return object;
+            };
+
+            /**
+             * Converts this OverlayGeometry to JSON.
+             * @function toJSON
+             * @memberof in_proto.FieldGroup.OverlayGeometry
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            OverlayGeometry.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for OverlayGeometry
+             * @function getTypeUrl
+             * @memberof in_proto.FieldGroup.OverlayGeometry
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            OverlayGeometry.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/in_proto.FieldGroup.OverlayGeometry";
+            };
+
+            return OverlayGeometry;
         })();
 
         return FieldGroup;
@@ -16212,7 +16548,6 @@ export const in_proto = $root.in_proto = (() => {
          * @property {number|null} [width] Navigator width
          * @property {number|null} [height] Navigator height
          * @property {boolean|null} [expandable] Navigator expandable
-         * @property {boolean|null} [scrollable] Navigator scrollable
          * @property {in_proto.INavigatorNode|null} [root] Navigator root
          * @property {Array.<in_proto.INavigatorColumn>|null} [columns] Navigator columns
          * @property {in_proto.IPopupMenu|null} [popupMenu] Navigator popupMenu
@@ -16220,6 +16555,7 @@ export const in_proto = $root.in_proto = (() => {
          * @property {Array.<in_proto.IConnection>|null} [connections] Navigator connections
          * @property {Array.<in_proto.IConnectionAttr>|null} [connectionAttrs] Navigator connectionAttrs
          * @property {Array.<string>|null} [selectItems] Navigator selectItems
+         * @property {boolean|null} [scrollable] Navigator scrollable
          */
 
         /**
@@ -16290,14 +16626,6 @@ export const in_proto = $root.in_proto = (() => {
         Navigator.prototype.expandable = false;
 
         /**
-         * Navigator scrollable.
-         * @member {boolean} scrollable
-         * @memberof in_proto.Navigator
-         * @instance
-         */
-        Navigator.prototype.scrollable = false;
-
-        /**
          * Navigator root.
          * @member {in_proto.INavigatorNode|null|undefined} root
          * @memberof in_proto.Navigator
@@ -16354,6 +16682,14 @@ export const in_proto = $root.in_proto = (() => {
         Navigator.prototype.selectItems = $util.emptyArray;
 
         /**
+         * Navigator scrollable.
+         * @member {boolean} scrollable
+         * @memberof in_proto.Navigator
+         * @instance
+         */
+        Navigator.prototype.scrollable = false;
+
+        /**
          * Creates a new Navigator instance using the specified properties.
          * @function create
          * @memberof in_proto.Navigator
@@ -16389,8 +16725,6 @@ export const in_proto = $root.in_proto = (() => {
                 writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.height);
             if (message.expandable != null && Object.hasOwnProperty.call(message, "expandable"))
                 writer.uint32(/* id 6, wireType 0 =*/48).bool(message.expandable);
-            if (message.scrollable != null && Object.hasOwnProperty.call(message, "scrollable"))
-                writer.uint32(/* id 6, wireType 0 =*/48).bool(message.scrollable);
             if (message.root != null && Object.hasOwnProperty.call(message, "root"))
                 $root.in_proto.NavigatorNode.encode(message.root, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
             if (message.columns != null && message.columns.length)
@@ -16409,6 +16743,8 @@ export const in_proto = $root.in_proto = (() => {
             if (message.selectItems != null && message.selectItems.length)
                 for (let i = 0; i < message.selectItems.length; ++i)
                     writer.uint32(/* id 13, wireType 2 =*/106).string(message.selectItems[i]);
+            if (message.scrollable != null && Object.hasOwnProperty.call(message, "scrollable"))
+                writer.uint32(/* id 14, wireType 0 =*/112).bool(message.scrollable);
             return writer;
         };
 
@@ -16562,9 +16898,6 @@ export const in_proto = $root.in_proto = (() => {
             if (message.expandable != null && message.hasOwnProperty("expandable"))
                 if (typeof message.expandable !== "boolean")
                     return "expandable: boolean expected";
-            if (message.scrollable != null && message.hasOwnProperty("scrollable"))
-                if (typeof message.scrollable !== "boolean")
-                    return "scrollable: boolean expected";
             if (message.root != null && message.hasOwnProperty("root")) {
                 let error = $root.in_proto.NavigatorNode.verify(message.root);
                 if (error)
@@ -16612,6 +16945,9 @@ export const in_proto = $root.in_proto = (() => {
                     if (!$util.isString(message.selectItems[i]))
                         return "selectItems: string[] expected";
             }
+            if (message.scrollable != null && message.hasOwnProperty("scrollable"))
+                if (typeof message.scrollable !== "boolean")
+                    return "scrollable: boolean expected";
             return null;
         };
 
@@ -16642,8 +16978,6 @@ export const in_proto = $root.in_proto = (() => {
                 message.height = object.height >>> 0;
             if (object.expandable != null)
                 message.expandable = Boolean(object.expandable);
-            if (object.scrollable != null)
-                message.scrollable = Boolean(object.scrollable);
             if (object.root != null) {
                 if (typeof object.root !== "object")
                     throw TypeError(".in_proto.Navigator.root: object expected");
@@ -16693,6 +17027,8 @@ export const in_proto = $root.in_proto = (() => {
                 for (let i = 0; i < object.selectItems.length; ++i)
                     message.selectItems[i] = String(object.selectItems[i]);
             }
+            if (object.scrollable != null)
+                message.scrollable = Boolean(object.scrollable);
             return message;
         };
 
@@ -16722,10 +17058,10 @@ export const in_proto = $root.in_proto = (() => {
                 object.width = 0;
                 object.height = 0;
                 object.expandable = false;
-                object.scrollable = false;
                 object.root = null;
                 object.popupMenu = null;
                 object.diagramConnectionRatio = 0;
+                object.scrollable = false;
             }
             if (message.base != null && message.hasOwnProperty("base"))
                 object.base = $root.in_proto.GuiElement.toObject(message.base, options);
@@ -16739,8 +17075,6 @@ export const in_proto = $root.in_proto = (() => {
                 object.height = message.height;
             if (message.expandable != null && message.hasOwnProperty("expandable"))
                 object.expandable = message.expandable;
-            if (message.scrollable != null && message.hasOwnProperty("scrollable"))
-                object.scrollable = message.scrollable;
             if (message.root != null && message.hasOwnProperty("root"))
                 object.root = $root.in_proto.NavigatorNode.toObject(message.root, options);
             if (message.columns && message.columns.length) {
@@ -16767,6 +17101,8 @@ export const in_proto = $root.in_proto = (() => {
                 for (let j = 0; j < message.selectItems.length; ++j)
                     object.selectItems[j] = message.selectItems[j];
             }
+            if (message.scrollable != null && message.hasOwnProperty("scrollable"))
+                object.scrollable = message.scrollable;
             return object;
         };
 
@@ -20787,6 +21123,7 @@ export const in_proto = $root.in_proto = (() => {
                         case 42:
                         case 43:
                         case 44:
+                        case 45:
                             break;
                         }
                     if (message.bgcolor != null && message.hasOwnProperty("bgcolor"))
@@ -20998,6 +21335,10 @@ export const in_proto = $root.in_proto = (() => {
                     case "ECycleButton":
                     case 44:
                         message.type = 44;
+                        break;
+                    case "EProgressbar":
+                    case 45:
+                        message.type = 45;
                         break;
                     }
                     if (object.bgcolor != null)
@@ -22408,6 +22749,238 @@ export const in_proto = $root.in_proto = (() => {
         };
 
         return Void;
+    })();
+
+    in_proto.Progressbar = (function() {
+
+        /**
+         * Properties of a Progressbar.
+         * @memberof in_proto
+         * @interface IProgressbar
+         * @property {in_proto.IGuiElement|null} [base] Progressbar base
+         * @property {number|null} [percent] Progressbar percent
+         */
+
+        /**
+         * Constructs a new Progressbar.
+         * @memberof in_proto
+         * @classdesc Represents a Progressbar.
+         * @implements IProgressbar
+         * @constructor
+         * @param {in_proto.IProgressbar=} [properties] Properties to set
+         */
+        function Progressbar(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Progressbar base.
+         * @member {in_proto.IGuiElement|null|undefined} base
+         * @memberof in_proto.Progressbar
+         * @instance
+         */
+        Progressbar.prototype.base = null;
+
+        /**
+         * Progressbar percent.
+         * @member {number} percent
+         * @memberof in_proto.Progressbar
+         * @instance
+         */
+        Progressbar.prototype.percent = 0;
+
+        /**
+         * Creates a new Progressbar instance using the specified properties.
+         * @function create
+         * @memberof in_proto.Progressbar
+         * @static
+         * @param {in_proto.IProgressbar=} [properties] Properties to set
+         * @returns {in_proto.Progressbar} Progressbar instance
+         */
+        Progressbar.create = function create(properties) {
+            return new Progressbar(properties);
+        };
+
+        /**
+         * Encodes the specified Progressbar message. Does not implicitly {@link in_proto.Progressbar.verify|verify} messages.
+         * @function encode
+         * @memberof in_proto.Progressbar
+         * @static
+         * @param {in_proto.IProgressbar} message Progressbar message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Progressbar.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.base != null && Object.hasOwnProperty.call(message, "base"))
+                $root.in_proto.GuiElement.encode(message.base, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.percent != null && Object.hasOwnProperty.call(message, "percent"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.percent);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Progressbar message, length delimited. Does not implicitly {@link in_proto.Progressbar.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof in_proto.Progressbar
+         * @static
+         * @param {in_proto.IProgressbar} message Progressbar message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Progressbar.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a Progressbar message from the specified reader or buffer.
+         * @function decode
+         * @memberof in_proto.Progressbar
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {in_proto.Progressbar} Progressbar
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Progressbar.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.in_proto.Progressbar();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.base = $root.in_proto.GuiElement.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 2: {
+                        message.percent = reader.int32();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a Progressbar message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof in_proto.Progressbar
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {in_proto.Progressbar} Progressbar
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Progressbar.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a Progressbar message.
+         * @function verify
+         * @memberof in_proto.Progressbar
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Progressbar.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.base != null && message.hasOwnProperty("base")) {
+                let error = $root.in_proto.GuiElement.verify(message.base);
+                if (error)
+                    return "base." + error;
+            }
+            if (message.percent != null && message.hasOwnProperty("percent"))
+                if (!$util.isInteger(message.percent))
+                    return "percent: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a Progressbar message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof in_proto.Progressbar
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {in_proto.Progressbar} Progressbar
+         */
+        Progressbar.fromObject = function fromObject(object) {
+            if (object instanceof $root.in_proto.Progressbar)
+                return object;
+            let message = new $root.in_proto.Progressbar();
+            if (object.base != null) {
+                if (typeof object.base !== "object")
+                    throw TypeError(".in_proto.Progressbar.base: object expected");
+                message.base = $root.in_proto.GuiElement.fromObject(object.base);
+            }
+            if (object.percent != null)
+                message.percent = object.percent | 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a Progressbar message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof in_proto.Progressbar
+         * @static
+         * @param {in_proto.Progressbar} message Progressbar
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Progressbar.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.base = null;
+                object.percent = 0;
+            }
+            if (message.base != null && message.hasOwnProperty("base"))
+                object.base = $root.in_proto.GuiElement.toObject(message.base, options);
+            if (message.percent != null && message.hasOwnProperty("percent"))
+                object.percent = message.percent;
+            return object;
+        };
+
+        /**
+         * Converts this Progressbar to JSON.
+         * @function toJSON
+         * @memberof in_proto.Progressbar
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Progressbar.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for Progressbar
+         * @function getTypeUrl
+         * @memberof in_proto.Progressbar
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        Progressbar.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/in_proto.Progressbar";
+        };
+
+        return Progressbar;
     })();
 
     return in_proto;
