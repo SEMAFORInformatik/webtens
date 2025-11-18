@@ -510,6 +510,6 @@ export default class BaseComponent extends Vue {
 
   isComponentInFocus(event: KeyboardEvent) {
     console.debug("isComponentInFocus base.ts", this.data.id, this.$store.state.lastCompId);
-    return document.activeElement?.tagName !== "INPUT" && this.$store.state.lastCompId === this.data.id;
+    return document.activeElement?.tagName !== "INPUT" && this.$store.state.lastCompId === this.getCompId(this.data);
   }
 }
