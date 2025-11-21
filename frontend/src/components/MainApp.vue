@@ -138,6 +138,7 @@ export default class MainApp extends mixins(base) {
     this.$intens.refreshForms = this.refreshForms;
     this.$intens.setForm = this.setForm;
     this.$intens.openForms = this.forms;
+    this.$intens.progressBar = this.progressBar;
     this.$intens.loadStatus = this.loadStatus;
   }
 
@@ -162,6 +163,10 @@ export default class MainApp extends mixins(base) {
 
   loadStatus(status: string, progress: number, max: number) {
     this.$emit("loadStatus", status, progress, max);
+  }
+
+  progressBar(data) {
+    document.getElementById(data.fullName)?.__vue__?.setPercent(data.value);
   }
 
   changeTab(form_name: string) {

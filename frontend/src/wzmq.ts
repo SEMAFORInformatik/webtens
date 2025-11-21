@@ -217,6 +217,11 @@ export default class ZMQ {
   progressReceive(r: [string, string]): void {
     this.state = "Receiving";
     let data = JSON.parse(r[1]);
+    if (r[0] === "progressbar_data") {
+      this.intens.progressBar(data);
+      this.state = "Idle";
+      return
+    }
 
     let dialogTitle = data.ProgressDialog.WindowTitle ? data.ProgressDialog.WindowTitle[0] : "Dialog ProgressBar";
     let mainTitle = data.ProgressDialog.MainTitle ? data.ProgressDialog.MainTitle[0] : "";

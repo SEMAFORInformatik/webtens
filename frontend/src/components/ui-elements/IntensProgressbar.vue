@@ -1,7 +1,9 @@
 <template>
   <progress
+    :id="data.fullName"
     class="intens-input"
     :value="percent"
+    max="100"
     :class="intensClass"
   >
   </progress>
@@ -33,6 +35,8 @@ class IntensProgressbar extends mixins(base) {
     this.intensClass = this.prefixCssClass(data.base?.styleClass)
     this.percent = data.percent
   }
+
+  setPercent(p) { this.percent = p; console.log(p)}
 
 }
 

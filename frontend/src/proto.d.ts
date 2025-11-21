@@ -3715,6 +3715,9 @@ export namespace in_proto {
 
         /** ElementList popupMenu */
         popupMenu?: (in_proto.IPopupMenu[]|null);
+
+        /** ElementList progressBars */
+        progressBars?: (in_proto.IProgressbar[]|null);
     }
 
     /** Represents an ElementList. */
@@ -3818,6 +3821,9 @@ export namespace in_proto {
 
         /** ElementList popupMenu. */
         public popupMenu: in_proto.IPopupMenu[];
+
+        /** ElementList progressBars. */
+        public progressBars: in_proto.IProgressbar[];
 
         /**
          * Creates a new ElementList instance using the specified properties.

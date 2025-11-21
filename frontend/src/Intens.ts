@@ -104,6 +104,12 @@ export class Intens {
     console.warn("showPopup called before re-assignment with params", popup);
   }
 
+  progressBar(
+    data
+  ): void {
+    console.warn("progressBar called before re-assignment with params", data);
+  }
+
   /**
    * Hide the currently shown popup
    *

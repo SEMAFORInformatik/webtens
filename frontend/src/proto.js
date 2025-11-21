@@ -10430,6 +10430,7 @@ export const in_proto = $root.in_proto = (() => {
          * @property {Array.<in_proto.ICycleButton>|null} [cyclebuttons] ElementList cyclebuttons
          * @property {Array.<in_proto.IPulldownMenu>|null} [pulldownMenus] ElementList pulldownMenus
          * @property {Array.<in_proto.IPopupMenu>|null} [popupMenu] ElementList popupMenu
+         * @property {Array.<in_proto.IProgressbar>|null} [progressBars] ElementList progressBars
          */
 
         /**
@@ -10472,6 +10473,7 @@ export const in_proto = $root.in_proto = (() => {
             this.cyclebuttons = [];
             this.pulldownMenus = [];
             this.popupMenu = [];
+            this.progressBars = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -10727,6 +10729,14 @@ export const in_proto = $root.in_proto = (() => {
         ElementList.prototype.popupMenu = $util.emptyArray;
 
         /**
+         * ElementList progressBars.
+         * @member {Array.<in_proto.IProgressbar>} progressBars
+         * @memberof in_proto.ElementList
+         * @instance
+         */
+        ElementList.prototype.progressBars = $util.emptyArray;
+
+        /**
          * Creates a new ElementList instance using the specified properties.
          * @function create
          * @memberof in_proto.ElementList
@@ -10843,6 +10853,9 @@ export const in_proto = $root.in_proto = (() => {
             if (message.popupMenu != null && message.popupMenu.length)
                 for (let i = 0; i < message.popupMenu.length; ++i)
                     $root.in_proto.PopupMenu.encode(message.popupMenu[i], writer.uint32(/* id 39, wireType 2 =*/314).fork()).ldelim();
+            if (message.progressBars != null && message.progressBars.length)
+                for (let i = 0; i < message.progressBars.length; ++i)
+                    $root.in_proto.Progressbar.encode(message.progressBars[i], writer.uint32(/* id 40, wireType 2 =*/322).fork()).ldelim();
             return writer;
         };
 
@@ -11061,6 +11074,12 @@ export const in_proto = $root.in_proto = (() => {
                         if (!(message.popupMenu && message.popupMenu.length))
                             message.popupMenu = [];
                         message.popupMenu.push($root.in_proto.PopupMenu.decode(reader, reader.uint32()));
+                        break;
+                    }
+                case 40: {
+                        if (!(message.progressBars && message.progressBars.length))
+                            message.progressBars = [];
+                        message.progressBars.push($root.in_proto.Progressbar.decode(reader, reader.uint32()));
                         break;
                     }
                 default:
@@ -11375,6 +11394,15 @@ export const in_proto = $root.in_proto = (() => {
                     let error = $root.in_proto.PopupMenu.verify(message.popupMenu[i]);
                     if (error)
                         return "popupMenu." + error;
+                }
+            }
+            if (message.progressBars != null && message.hasOwnProperty("progressBars")) {
+                if (!Array.isArray(message.progressBars))
+                    return "progressBars: array expected";
+                for (let i = 0; i < message.progressBars.length; ++i) {
+                    let error = $root.in_proto.Progressbar.verify(message.progressBars[i]);
+                    if (error)
+                        return "progressBars." + error;
                 }
             }
             return null;
@@ -11702,6 +11730,16 @@ export const in_proto = $root.in_proto = (() => {
                     message.popupMenu[i] = $root.in_proto.PopupMenu.fromObject(object.popupMenu[i]);
                 }
             }
+            if (object.progressBars) {
+                if (!Array.isArray(object.progressBars))
+                    throw TypeError(".in_proto.ElementList.progressBars: array expected");
+                message.progressBars = [];
+                for (let i = 0; i < object.progressBars.length; ++i) {
+                    if (typeof object.progressBars[i] !== "object")
+                        throw TypeError(".in_proto.ElementList.progressBars: object expected");
+                    message.progressBars[i] = $root.in_proto.Progressbar.fromObject(object.progressBars[i]);
+                }
+            }
             return message;
         };
 
@@ -11750,6 +11788,7 @@ export const in_proto = $root.in_proto = (() => {
                 object.cyclebuttons = [];
                 object.pulldownMenus = [];
                 object.popupMenu = [];
+                object.progressBars = [];
             }
             if (message.plot_2ds && message.plot_2ds.length) {
                 object.plot_2ds = [];
@@ -11905,6 +11944,11 @@ export const in_proto = $root.in_proto = (() => {
                 object.popupMenu = [];
                 for (let j = 0; j < message.popupMenu.length; ++j)
                     object.popupMenu[j] = $root.in_proto.PopupMenu.toObject(message.popupMenu[j], options);
+            }
+            if (message.progressBars && message.progressBars.length) {
+                object.progressBars = [];
+                for (let j = 0; j < message.progressBars.length; ++j)
+                    object.progressBars[j] = $root.in_proto.Progressbar.toObject(message.progressBars[j], options);
             }
             return object;
         };
