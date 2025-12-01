@@ -41,7 +41,8 @@ export default {
     issuer: process.env.OIDC_ISSUER,
     client: process.env.OIDC_CLIENT,
     clientSecret: process.env.OIDC_CLIENT_SECRET,
-    idpLogout: !!(process.env.OIDC_IDP_LOGOUT || false)
+    idpLogout: !!(process.env.OIDC_IDP_LOGOUT || false),
+    usernameField: process.env.OIDC_USERNAME_FIELD || "preferred_username"
   }: undefined,
 
   otel: process.env.OTEL_ENDPOINT ? {

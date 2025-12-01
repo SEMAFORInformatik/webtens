@@ -166,7 +166,7 @@ export default (app: express.Application) => {
     let username = "";
     if (req.oidc) {
       sessionID = req.oidc.idTokenClaims.sid as string;
-      username = req.oidc.idTokenClaims.preferred_username;
+      username = req.oidc.idTokenClaims[config.oidc.usernameField] as string;
     } else {
       sessionID = req.sessionID;
       username = req.session.username
@@ -200,7 +200,7 @@ export default (app: express.Application) => {
   })
 
   app.get(`${config.basePath}/userfiles/:user/:file`, requiresAuth, async (req, res) => {
-    if (req.params.user !== req.session.username && req.params.user !== (await req.oidc.fetchUserInfo()).preferred_username) {
+    if (req.params.user !== req.session.username && req.params.user !== (await req.oidc.fetchUserInfo())[config.oidc.usernameField]) {
       Logger.warn({ username: req.session.username }, `Attempted to download file of other user ${req.params.user}`)
       res.status(403).send("Only the specified user can access this file")
       return

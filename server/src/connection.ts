@@ -169,7 +169,7 @@ export default (ioServer: SocketIO.Server, io: SocketIO.Namespace) => {
       token = await getJwt(socket.handshake.headers.cookie);
       const claims = JSON.parse(atob(token.split(".")[1]))
       expiry = claims.exp;
-      username = claims.preferred_username;
+      username = claims[config.oidc.usernameField];
       sessionID = claims.sid;
     } else {
       username = (socket.request as any).session.username
