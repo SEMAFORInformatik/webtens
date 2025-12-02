@@ -4639,6 +4639,7 @@ export const in_proto = $root.in_proto = (() => {
          * @property {in_proto.GuiElement.Alignment|null} [labelAlignment] FieldGroup labelAlignment
          * @property {in_proto.GuiElement.Orientation|null} [orientation] FieldGroup orientation
          * @property {boolean|null} [frame] FieldGroup frame
+         * @property {string|null} [action] FieldGroup action
          * @property {Array.<in_proto.FieldGroup.IGridTemplateField>|null} [gridTemplateColumns] FieldGroup gridTemplateColumns
          * @property {Array.<in_proto.IFieldGroupLine>|null} [lines] FieldGroup lines
          * @property {in_proto.FieldGroup.IOverlayGeometry|null} [overlay] FieldGroup overlay
@@ -4735,6 +4736,14 @@ export const in_proto = $root.in_proto = (() => {
         FieldGroup.prototype.scrollbars = false;
 
         /**
+         * FieldGroup action.
+         * @member {string} action
+         * @memberof in_proto.FieldGroup
+         * @instance
+         */
+        FieldGroup.prototype.action = "";
+
+        /**
          * Creates a new FieldGroup instance using the specified properties.
          * @function create
          * @memberof in_proto.FieldGroup
@@ -4778,6 +4787,8 @@ export const in_proto = $root.in_proto = (() => {
                 $root.in_proto.FieldGroup.OverlayGeometry.encode(message.overlay, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
             if (message.scrollbars != null && Object.hasOwnProperty.call(message, "scrollbars"))
                 writer.uint32(/* id 9, wireType 0 =*/72).bool(message.scrollbars);
+            if (message.action != null && Object.hasOwnProperty.call(message, "action"))
+                writer.uint32(/* id 10, wireType 2 =*/82).string(message.action);
             return writer;
         };
 
@@ -4850,6 +4861,10 @@ export const in_proto = $root.in_proto = (() => {
                     }
                 case 9: {
                         message.scrollbars = reader.bool();
+                        break;
+                    }
+                case 10: {
+                        message.action = reader.string();
                         break;
                     }
                 default:
@@ -4948,6 +4963,9 @@ export const in_proto = $root.in_proto = (() => {
             if (message.scrollbars != null && message.hasOwnProperty("scrollbars"))
                 if (typeof message.scrollbars !== "boolean")
                     return "scrollbars: boolean expected";
+            if (message.action != null && message.hasOwnProperty("action"))
+                if (!$util.isString(message.action))
+                    return "action: string expected";
             return null;
         };
 
@@ -5063,6 +5081,8 @@ export const in_proto = $root.in_proto = (() => {
             }
             if (object.scrollbars != null)
                 message.scrollbars = Boolean(object.scrollbars);
+            if (object.action != null)
+                message.action = String(object.action);
             return message;
         };
 
@@ -5091,6 +5111,7 @@ export const in_proto = $root.in_proto = (() => {
                 object.frame = false;
                 object.overlay = null;
                 object.scrollbars = false;
+                object.action = "";
             }
             if (message.base != null && message.hasOwnProperty("base"))
                 object.base = $root.in_proto.GuiElement.toObject(message.base, options);
@@ -5116,6 +5137,8 @@ export const in_proto = $root.in_proto = (() => {
                 object.overlay = $root.in_proto.FieldGroup.OverlayGeometry.toObject(message.overlay, options);
             if (message.scrollbars != null && message.hasOwnProperty("scrollbars"))
                 object.scrollbars = message.scrollbars;
+            if (message.action != null && message.hasOwnProperty("action"))
+                object.action = message.action;
             return object;
         };
 

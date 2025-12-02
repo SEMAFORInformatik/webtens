@@ -198,6 +198,7 @@ export interface IntensCycleButtonData extends IntensBaseData {
 export interface IntensFieldgroupData extends IntensBaseData {
   element: IntensComponentData[][];
   expand: string;
+  action?: string;
   frame: boolean;
   label: string;
   name: string;

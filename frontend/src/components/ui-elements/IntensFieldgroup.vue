@@ -7,7 +7,12 @@
       :style="{
         'grid-template-columns': templateColumns,
         'grid-template-rows': `repeat(${vertical ? longestLine : lines.length}, max-content)`,
-      }">
+      }"
+      @click="
+        clicked().then((type) => {
+          clickOnItem(type);
+        })
+      ">
       <template v-for="line in lines">
         <template v-for="(component, i) in line">
           <div
@@ -53,6 +58,7 @@ class IntensFieldgroup extends mixins(base) {
   longestLine = 0;
   label = "";
   vertical = false;
+  click: any = null;
   lines: any = []
   show: boolean = this.data.base.visible || this.data.base.visible === undefined;
 
@@ -104,7 +110,7 @@ class IntensFieldgroup extends mixins(base) {
         return "flex-end"
     }
     return "flex-start"
-    
+
   }
 
   isSeparator(type: in_proto.GuiElement.Type) {
@@ -116,6 +122,37 @@ class IntensFieldgroup extends mixins(base) {
       if (!e.minMax) return "max-content"
       return `minmax(max-content, ${e.minMax}%)`
     }).join(" ")
+  }
+
+  async clickOnItem(type: string) {
+    let reason = type === "dblclick" ? "activate" : "select";
+    if (this.data.action) {
+
+      this.getTracer().startActiveSpan("fieldgroup click", async span => {
+        span.setAttribute("click type", type);
+        await this.execute({
+          action: this.data.action,
+          reason,
+          guielement: this.data.base.Name
+        });
+        span.end();
+      })
+    }
+  }
+
+  // Helper function to determine dblclick event
+  // @click + @dblclick would fire 3 events each time doubleclicked
+  clicked() {
+    return new Promise<string>((resolve) => {
+      if (this.click) {
+        clearTimeout(this.click);
+        resolve("dblclick");
+      }
+      this.click = setTimeout(() => {
+        this.click = undefined;
+        resolve("click");
+      }, 300);
+    });
   }
 }
 

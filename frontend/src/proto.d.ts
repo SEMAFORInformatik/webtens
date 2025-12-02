@@ -1559,6 +1559,9 @@ export namespace in_proto {
 
         /** FieldGroup scrollbars */
         scrollbars?: (boolean|null);
+
+        /** FieldGroup action */
+        action?: (string|null);
     }
 
     /** Represents a FieldGroup. */
@@ -1596,6 +1599,9 @@ export namespace in_proto {
 
         /** FieldGroup scrollbars. */
         public scrollbars: boolean;
+
+        /** FieldGroup action. */
+        public action: string;
 
         /**
          * Creates a new FieldGroup instance using the specified properties.
