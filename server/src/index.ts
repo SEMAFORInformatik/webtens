@@ -91,7 +91,7 @@ if (config.oidc) {
     authRequired: false,
     authorizationParams: {
       response_type: "code",
-      scope: "openid profile email offline_access " + config.oidc.client + "/.default"
+      scope: "openid profile email offline_access" + config.oidc.additionalScopes
     },
     clientSecret: config.oidc.clientSecret,
     clientID: config.oidc.client,
