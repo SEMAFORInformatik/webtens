@@ -153,6 +153,7 @@ const getJwt = async (cookie: any): Promise<string> => {
 }
 
 export default (ioServer: SocketIO.Server, io: SocketIO.Namespace) => {
+  let instance: IntensInstance;
   connectionCounter.addCallback(result => {
     result.observe(ioServer.engine.clientsCount, { intensApp: config.containerType })
   })
@@ -193,7 +194,7 @@ export default (ioServer: SocketIO.Server, io: SocketIO.Namespace) => {
         return;
       }
 
-      let instance = new IntensInstance(sessionID, useAlternatives, utcOffset);
+      instance = new IntensInstance(sessionID, useAlternatives, utcOffset);
       let ip: string = null;
       let loggedInUser: string = null;
       try {
@@ -252,6 +253,7 @@ export default (ioServer: SocketIO.Server, io: SocketIO.Namespace) => {
         await instance.addLabels({ username, sessionID })
         tokenRefreshed = true;
       }
+      instance.addLabels({connected: "true", lastConnection: String(Date.now())})
 
       intensReqSocket = new zmq.Request;
       intensSubSocket = new zmq.Subscriber;
@@ -318,6 +320,7 @@ export default (ioServer: SocketIO.Server, io: SocketIO.Namespace) => {
     });
 
     socket.on("disconnect", () => {
+      instance.addLabels({connected: "false", lastConnection: String(Date.now())})
       Logger.info(`disconnected websocket`);
       // The other sockets should close automatically as soon as they're done an out of scope
       intensSubSocket?.close();
