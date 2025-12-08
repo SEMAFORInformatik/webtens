@@ -250,7 +250,8 @@ export default (ioServer: SocketIO.Server, io: SocketIO.Namespace) => {
       // and in production this doesn't happen, this is only implemented for oauth
       if (config.oidc && !loggedInUser) {
         await instance.login("__token__", token, "en-US");
-        await instance.addLabels({ username, sessionID })
+        const usernameLabel = username.replace(/[^\x00-\x7F]/g, "");
+        await instance.addLabels({ username: usernameLabel, sessionID })
         tokenRefreshed = true;
       }
       instance.addLabels({connected: "true", lastConnection: String(Date.now())})
