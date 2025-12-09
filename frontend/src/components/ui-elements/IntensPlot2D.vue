@@ -1,6 +1,6 @@
 <template>
   <div class="intens-plot-internal">
-    <div :id="data.name" class="intens-plot" :class="intensClass" v-if="show" ref="plotRoot">
+    <div :id="data.base.Name" class="intens-plot" :class="intensClass" v-if="show" ref="plotRoot">
       <div
         v-if="loaded"
         class="grid"
