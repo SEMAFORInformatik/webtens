@@ -14,7 +14,7 @@
         :id="data.element.base.fullName || data.element.base.action" ref="input" class="edit-input" type="text" :style="{
         textAlign: !isDouble ? 'left' : 'right',
         backgroundColor: data.element.base.bgColor ? data.element.base.bgColor : 'inherit'
-      }" v-model="value" @keyup.enter="sendValueUpdate" @blur="sendValueUpdate" @keydown="handleKey" autocomplete="off" />
+      }" @focus="setEditValue" v-model="value" @keyup.enter="sendValueUpdate" @blur="sendValueUpdate" @keydown="handleKey" autocomplete="off" />
       <span v-else
         :id="data.element.base.fullName || data.element.base.action" ref="input" class="span-input" type="text" :style="{
         textAlign: !isDouble ? 'left' : 'right',
@@ -45,6 +45,7 @@ class IntensTableCellComp extends mixins(base) {
   @Prop({ default: false })
   isFocused!: boolean;
   value = "";
+  oldEditValue = "";
 
   intensSelectData: in_proto.IComboBox & {index?: number, hasTable?: boolean, style: {noMargin:boolean}} | null = null;
   intensToggleData: in_proto.IDataField & {index?: number, hasTable?: boolean} | null = null;
@@ -81,8 +82,28 @@ class IntensTableCellComp extends mixins(base) {
     if (!this.data.element) console.log(this)
   }
 
+  setEditValue() {
+    if (this.data.element.base.value.datatype == in_proto.ValueInfo.DataType.Double) {
+      let delim = '.';
+      if (this.value.toString().indexOf(',') > 0) delim = ',';
+      let svalue = (this.data.element.base.value.doubleValue || this.value) as string;
+      let value = parseFloat(svalue) * this.data.element.base.scale;
+
+      this.value = String(Number(value.toPrecision(12))).replaceAll(".", delim)
+      // special cases
+      if (Number.isNaN(value)) this.value = "";
+      if (value === 0) this.value = "0";
+    }
+    this.oldEditValue = this.value;
+  }
+
+
   sendValueUpdate() {
     this.$emit("navigate", "blur");
+    if (this.value === this.oldEditValue) {
+      this.reRender()
+      return;
+    }
     if (this.data.element.base.value.datatype === in_proto.ValueInfo.DataType.Double
       && this.value === this.data.element.base.value.formattedValue) {
       return;
