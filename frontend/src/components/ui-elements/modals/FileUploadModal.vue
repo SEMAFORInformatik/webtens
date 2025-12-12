@@ -26,7 +26,7 @@ class FileUploadModal extends mixins(base) {
   hasFile = false;
   isUploading = false;
   mounted() {
-    this.$refs.fileInput.click()
+    if (!navigator.webdriver) this.$refs.fileInput.click()
   }
   updateStatus() {
     const file = (this.$refs.fileInput as HTMLInputElement).files[0];
