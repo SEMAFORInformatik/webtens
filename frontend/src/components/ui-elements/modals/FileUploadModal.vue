@@ -6,8 +6,8 @@
         <input id="fileUploadButton" type="file" @change="updateStatus" @cancel="close" ref="fileInput" :accept="fileTypes" />
       </form>
       <div class="modal-buttonbar" id="uploadbuttons" :style="`grid-template-columns: repeat(2, 1fr)`">
-        <i-button :visible="false" id="web-file-upload-submit" @click="fileUpload">Submit</i-button>
-        <i-button :visible="false" id="web-file-upload-abort" @click="close">Abort</i-button>
+        <i-button id="web-file-upload-submit" @click="fileUpload">Submit</i-button>
+        <i-button id="web-file-upload-abort" @click="close">Abort</i-button>
       </div>
     </div>
   </div>
@@ -79,11 +79,7 @@ export default FileUploadModal;
 </script>
 
 <style>
-#fileUploadButton, #uploadmodal, #uploadbuttons {
-  visibility: hidden !important;
-}
-
 .vm--modal:has(#uploadmodal) {
-  visibility: hidden !important;
+  filter: opacity(0);
 }
 </style>
