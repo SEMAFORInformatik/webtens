@@ -27,7 +27,7 @@ const requiresAuth = async (req: express.Request, res: express.Response, next: e
     next()
   } else {
     try {
-      await req.oidc.accessToken.refresh()
+      await req.oidc.accessToken?.refresh()
       next();
       return;
     } catch {
@@ -140,7 +140,7 @@ export default (app: express.Application) => {
 
   app.get(`${config.basePath}/oidc-session`, (req, res) => {
     if (res.oidc) {
-      res.send(req.oidc?.accessToken.access_token || "empty")
+      res.send(req.oidc?.accessToken?.access_token || "empty")
     } else {
       res.status(404).send("OIDC not enabled")
     }
@@ -149,8 +149,8 @@ export default (app: express.Application) => {
   app.post(`${config.basePath}/oidc-refresh`, async (req, res) => {
     if (req.oidc) {
       try {
-        const token = await req.oidc.accessToken.refresh()
-        const sessionID = req.oidc.idTokenClaims.sid as string
+        const token = await req.oidc.accessToken?.refresh()
+        const sessionID = req.oidc.idTokenClaims?.sid as string
         res.send(token.access_token)
       } catch (e) {
         Logger.error(e);
