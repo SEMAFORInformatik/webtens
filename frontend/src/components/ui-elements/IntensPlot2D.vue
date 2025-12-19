@@ -440,8 +440,9 @@ class IntensPlot2D extends mixins(base) {
             name: this.data.base.Name,
             method: "getcurveInfo",
           }, false).then(response => {
-            const info: string[] = JSON.parse(response.method).plotitemsInfo.filter(Boolean)
+            const info: string[] = JSON.parse(response.method).plotitemsInfo
             const label = info.reduce((p, c, i) => {
+              if (!c) return p;
               return `${p}${this.serieList[i]}: ${valuesAtCursor[i]}, ${c}<br/>`
             }, startText)
             callback(id, label)
