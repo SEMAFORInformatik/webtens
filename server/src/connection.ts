@@ -165,19 +165,29 @@ export default (ioServer: SocketIO.Server, io: SocketIO.Namespace) => {
     let sessionID: string;
     let expiry: number;
     let tokenRefreshed = false;
+    const Logger = MainLogger.child({ username, socketID: socket.id, sessionID })
 
     if (config.oidc) {
       token = await getJwt(socket.handshake.headers.cookie);
-      const claims = JSON.parse(atob(token.split(".")[1]))
-      expiry = claims.exp;
-      username = claims[config.oidc.usernameField];
-      sessionID = claims.sid;
+      try {
+        const claims = JSON.parse(atob(token.split(".")[1]))
+        expiry = claims.exp;
+        username = claims[config.oidc.usernameField];
+        sessionID = claims.sid;
+      } catch (_) {
+        Logger.error(`Invalid token: ${token}`)
+        socket.emit("error", {
+          title: "Login error",
+          message: "Token error. Log out and try again."
+        })
+        socket.disconnect();
+        return
+      }
     } else {
       username = (socket.request as any).session.username
       sessionID = (socket.request as any).sessionID
     }
 
-    const Logger = MainLogger.child({ username, socketID: socket.id, sessionID })
     Logger.info(`websocket connected`);
 
     let intensReqSocket: zmq.Request;
@@ -284,12 +294,21 @@ export default (ioServer: SocketIO.Server, io: SocketIO.Namespace) => {
           socket.emit("token-refresh")
           await new Promise(resolve => {
             socket.on("token-refresh", async token => {
-              await instance.login("__accesstoken__", token, "en-US");
-              const claims = JSON.parse(atob(token.split(".")[1]))
-              expiry = claims.exp;
-              tokenRefreshed = true;
-              socket.removeAllListeners("token-refresh")
-              resolve("");
+              try {
+                await instance.login("__accesstoken__", token, "en-US");
+                const claims = JSON.parse(atob(token.split(".")[1]))
+                expiry = claims.exp;
+                tokenRefreshed = true;
+                socket.removeAllListeners("token-refresh")
+              } catch (e) {
+                Logger.warn(e);
+                socket.emit("error", {
+                  title: "Session error",
+                  message: "Failed to extend login duration."
+                })
+              } finally {
+                resolve("")
+              }
             })
           })
         }
