@@ -165,8 +165,8 @@ export default (app: express.Application) => {
     let sessionID = "";
     let username = "";
     if (req.oidc) {
-      sessionID = req.oidc.idTokenClaims.sid as string;
-      username = req.oidc.idTokenClaims[config.oidc.usernameField] as string;
+      sessionID = req.oidc.idTokenClaims?.sid as string;
+      username = req.oidc.idTokenClaims?.[config.oidc.usernameField] as string;
     } else {
       sessionID = req.sessionID;
       username = req.session.username
