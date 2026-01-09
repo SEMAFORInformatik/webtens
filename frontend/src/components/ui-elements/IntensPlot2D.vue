@@ -1,6 +1,6 @@
 <template>
   <div class="intens-plot-internal">
-    <div :id="data.base.Name" class="intens-plot" :class="intensClass" v-if="show" ref="plotRoot">
+    <div :id="data.base.Name" class="intens-plot" :class="intensClass" v-if="show" ref="plotRoot" :style="{contentVisibility: loaded ? 'visible' : 'auto'}">
       <div
         v-if="loaded"
         class="grid"
@@ -1535,7 +1535,6 @@ export default IntensPlot2D;
 
   .intens-plot {
     margin: 10px;
-    content-visibility: auto;
     width: max-content;
   }
 
