@@ -150,7 +150,7 @@ class IntensInput extends mixins(base) {
   }
 
   async execEnter() {
-    this.exec();
+    await this.exec();
     this.focused = true
   }
 
@@ -174,7 +174,7 @@ class IntensInput extends mixins(base) {
     //console.debug("Input, vn: ", this.data.fullName, " ", this.fullName)
     if (this.invalidValue === false && this.oldEditValue !== this.currentValue) {
       this.rawValue = val
-      this.getTracer().startActiveSpan("update field", async span => {
+      await this.getTracer().startActiveSpan("update field", async span => {
       if (this.data.action) {
           await this.execute({ action: this.data.action, reason: "Input", name: this.fullName, value: val });
         } else {
@@ -182,8 +182,7 @@ class IntensInput extends mixins(base) {
         }
         span.end()
       })
-    } else
-    if (this.invalidValue === false && this.oldEditValue === this.currentValue)
+    } else if (this.invalidValue === false && this.oldEditValue === this.currentValue)
       this.currentValue = this.formatValue({
         value: this.rawValue,
         datatype:this.data.value.datatype,
