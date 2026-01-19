@@ -189,7 +189,7 @@ const getPrecision = (range: number) => {
 
     const output = maximumPrec - Math.floor((normalizedInput * (maximumPrec - minimumPrec)));
 
-    return output;
+    return Math.max(Math.min(output, maximumPrec), minimumPrec);
 }
 
 interface DataZoomEvent {
