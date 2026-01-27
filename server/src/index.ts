@@ -115,6 +115,7 @@ app.use(async (req, res, next) => {
   if (req.url.endsWith(".scss")) {
     const filename = `${__dirname}/../public/${req.path.replace("/res/", "")}`;
     if (!fs.existsSync(filename)) {
+      Logger.warn(`scss file ${filename} not found`)
       next()
       return
     }
