@@ -1,6 +1,7 @@
 // Import the tracing module before everything else so it can prepare the hooks for the other libraries
 import "./tracing";
 import config from "./config";
+import fs from "fs"
 import SocketIO from "socket.io";
 import Express from "express";
 import crypto from "crypto";
@@ -112,9 +113,17 @@ io.use(wrap(session));
 
 app.use(async (req, res, next) => {
   if (req.url.endsWith(".scss")) {
-    sass.compileAsync(`${__dirname}/../public/${req.path.replace("/res/", "")}`).then(compiled => {
+    const filename = `${__dirname}/../public/${req.path.replace("/res/", "")}`;
+    if (!fs.existsSync(filename)) {
+      next()
+      return
+    }
+
+    sass.compileAsync(filename).then(compiled => {
       res.header("Content-Type", "text/css");
       res.send(compiled.css);
+    }).catch(e => {
+      Logger.error("invalid scss", e)
     })
   } else {
     next();
