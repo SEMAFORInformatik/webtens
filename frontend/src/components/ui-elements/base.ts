@@ -260,8 +260,9 @@ export default class BaseComponent extends Vue {
 
     if (r.elements) {
       this.getTracer().startActiveSpan("processElementUpdates", {}, ctx, span2 => {
-        for (const ele of r.elements.menuButtons) {
-          this.$intens.uiEles[ele.base.id] = ele
+        const allEles = Object.values(r.elements).flat(1);
+        for (const ele of allEles) {
+          this.$intens.uiEles[this.getCompId(ele)] = ele
         }
         this.$ids.processElementUpdates(r.elements);
         span2.end();
