@@ -82,13 +82,14 @@ class IntensTable extends mixins(base) {
     let matrix = data.matrix;
 
     this.pageSize = paging ? this.pageSize : Math.max(matrix.length, matrix[0]?.a?.length);
+
+    if (!paging) this.pageEndPos = this.pageSize
     // If we were on a different page before, we wanna stay there
-    if (!paging && this.currentPage != 1) {
+    if (this.currentPage != 1) {
       this.goToPage(this.currentPage);
       return
     }
 
-    if (!paging) this.pageEndPos = this.pageSize
     this.title = sanitizeHtml(data.title);
     const renderBodyCell = ({ row, column }, h) => {
       const getField = ({field, children}) => field || getField(children[0])

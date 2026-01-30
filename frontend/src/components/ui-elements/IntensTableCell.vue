@@ -107,8 +107,6 @@ class IntensTableCellComp extends mixins(base) {
     if (this.data.element.base.value.datatype === in_proto.ValueInfo.DataType.Double
       && this.value === this.data.element.base.value.formattedValue) {
       return;
-      } else if ((!this.value && this.data.element.base.value.formattedValue) || (this.value === this.data.element.base.value.formattedValue as string || this.value === this.data.element.base.value.stringValue)) {
-      return;
     }
 
     let val: string | number;
