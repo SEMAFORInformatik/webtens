@@ -6,7 +6,7 @@
       :cellSelectionOption="{ enable: selectionMode }" :column-width-resize-option="{ enable: true }"
       :rowStyleOption="{ hoverHighlight: false, clickHighlight: false }"
       :virtual-scroll-option="{ enable: true, minRowHeight: 25 }"
-      :max-height="(data.numRowsVisible + headerHeight) * ROW_HEIGHT - workaroundPixel"
+      :max-height="(data.numRowsVisible + headerHeight) * ROW_HEIGHT - workaroundPixel + (dataCache.numColumnsVisible !== dataCache.numColumns ? getScrollbarWidth() : 0)"
       :scrollWidth="dataCache.numColumnsVisible !== dataCache.numColumns && visibleWidth > 0 ? visibleWidth: undefined"
       :key="selectKey"
       :style="{width: dataCache.numColumnsVisible !== dataCache.numColumns ? `${visibleWidth}px`: undefined}" />

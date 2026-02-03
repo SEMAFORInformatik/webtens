@@ -1,8 +1,10 @@
 <template>
-  <fieldset class="intens-fieldgroup" :class="[{ framed: data.frame }, intensClass]" v-show="show">
-    <legend class="label" v-if="data.label" v-html="label"></legend>
+  <fieldset class="intens-fieldgroup" :class="[{ framed: data.frame, accordion: data.accordion, open: data.accordion && accordionOpen}, intensClass]" v-show="!data.accordion ? show : true">
+    <i-button class="intens-button" @click="toggleAccordion" v-if="data.accordion"><span>{{ data.label }}</span></i-button>
+    <legend class="label" v-if="data.label && !data.accordion" v-html="label"></legend>
     <div
       class="intens-fieldgroup-lines"
+      v-show="data.accordion ? accordionOpen : true"
       :class="{ vertical }"
       :style="{
         'grid-template-columns': templateColumns,
@@ -59,6 +61,7 @@ class IntensFieldgroup extends mixins(base) {
   label = "";
   vertical = false;
   click: any = null;
+  accordionOpen = false
   lines: any = []
   show: boolean = this.data.base.visible || this.data.base.visible === undefined;
 
@@ -90,11 +93,13 @@ class IntensFieldgroup extends mixins(base) {
 
     this.label = unescape(this.data.label);
     this.show = this.data.base.visible || this.data.base.visible === undefined;
+    this.accordionOpen = !!this.data.accordionOpen
   }
 
   getNewValue(data: in_proto.IFieldGroup) {
     this.intensClass = this.prefixCssClass(data.base.styleClass)
     this.show = data.base.visible || data.base.visible === undefined;
+    this.accordionOpen = !!data.accordionOpen
   }
 
   alignmentToCss(alignment: in_proto.GuiElement.Alignment, e): string {
@@ -111,6 +116,10 @@ class IntensFieldgroup extends mixins(base) {
     }
     return "flex-start"
 
+  }
+
+  toggleAccordion() {
+    this.accordionOpen = !this.accordionOpen
   }
 
   isSeparator(type: in_proto.GuiElement.Type) {

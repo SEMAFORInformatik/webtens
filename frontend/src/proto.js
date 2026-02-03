@@ -4639,11 +4639,13 @@ export const in_proto = $root.in_proto = (() => {
          * @property {in_proto.GuiElement.Alignment|null} [labelAlignment] FieldGroup labelAlignment
          * @property {in_proto.GuiElement.Orientation|null} [orientation] FieldGroup orientation
          * @property {boolean|null} [frame] FieldGroup frame
-         * @property {string|null} [action] FieldGroup action
          * @property {Array.<in_proto.FieldGroup.IGridTemplateField>|null} [gridTemplateColumns] FieldGroup gridTemplateColumns
          * @property {Array.<in_proto.IFieldGroupLine>|null} [lines] FieldGroup lines
          * @property {in_proto.FieldGroup.IOverlayGeometry|null} [overlay] FieldGroup overlay
          * @property {boolean|null} [scrollbars] FieldGroup scrollbars
+         * @property {string|null} [action] FieldGroup action
+         * @property {boolean|null} [accordion] FieldGroup accordion
+         * @property {boolean|null} [accordionOpen] FieldGroup accordionOpen
          */
 
         /**
@@ -4744,6 +4746,22 @@ export const in_proto = $root.in_proto = (() => {
         FieldGroup.prototype.action = "";
 
         /**
+         * FieldGroup accordion.
+         * @member {boolean} accordion
+         * @memberof in_proto.FieldGroup
+         * @instance
+         */
+        FieldGroup.prototype.accordion = false;
+
+        /**
+         * FieldGroup accordionOpen.
+         * @member {boolean} accordionOpen
+         * @memberof in_proto.FieldGroup
+         * @instance
+         */
+        FieldGroup.prototype.accordionOpen = false;
+
+        /**
          * Creates a new FieldGroup instance using the specified properties.
          * @function create
          * @memberof in_proto.FieldGroup
@@ -4789,6 +4807,10 @@ export const in_proto = $root.in_proto = (() => {
                 writer.uint32(/* id 9, wireType 0 =*/72).bool(message.scrollbars);
             if (message.action != null && Object.hasOwnProperty.call(message, "action"))
                 writer.uint32(/* id 10, wireType 2 =*/82).string(message.action);
+            if (message.accordion != null && Object.hasOwnProperty.call(message, "accordion"))
+                writer.uint32(/* id 11, wireType 0 =*/88).bool(message.accordion);
+            if (message.accordionOpen != null && Object.hasOwnProperty.call(message, "accordionOpen"))
+                writer.uint32(/* id 12, wireType 0 =*/96).bool(message.accordionOpen);
             return writer;
         };
 
@@ -4865,6 +4887,14 @@ export const in_proto = $root.in_proto = (() => {
                     }
                 case 10: {
                         message.action = reader.string();
+                        break;
+                    }
+                case 11: {
+                        message.accordion = reader.bool();
+                        break;
+                    }
+                case 12: {
+                        message.accordionOpen = reader.bool();
                         break;
                     }
                 default:
@@ -4966,6 +4996,12 @@ export const in_proto = $root.in_proto = (() => {
             if (message.action != null && message.hasOwnProperty("action"))
                 if (!$util.isString(message.action))
                     return "action: string expected";
+            if (message.accordion != null && message.hasOwnProperty("accordion"))
+                if (typeof message.accordion !== "boolean")
+                    return "accordion: boolean expected";
+            if (message.accordionOpen != null && message.hasOwnProperty("accordionOpen"))
+                if (typeof message.accordionOpen !== "boolean")
+                    return "accordionOpen: boolean expected";
             return null;
         };
 
@@ -5083,6 +5119,10 @@ export const in_proto = $root.in_proto = (() => {
                 message.scrollbars = Boolean(object.scrollbars);
             if (object.action != null)
                 message.action = String(object.action);
+            if (object.accordion != null)
+                message.accordion = Boolean(object.accordion);
+            if (object.accordionOpen != null)
+                message.accordionOpen = Boolean(object.accordionOpen);
             return message;
         };
 
@@ -5112,6 +5152,8 @@ export const in_proto = $root.in_proto = (() => {
                 object.overlay = null;
                 object.scrollbars = false;
                 object.action = "";
+                object.accordion = false;
+                object.accordionOpen = false;
             }
             if (message.base != null && message.hasOwnProperty("base"))
                 object.base = $root.in_proto.GuiElement.toObject(message.base, options);
@@ -5139,6 +5181,10 @@ export const in_proto = $root.in_proto = (() => {
                 object.scrollbars = message.scrollbars;
             if (message.action != null && message.hasOwnProperty("action"))
                 object.action = message.action;
+            if (message.accordion != null && message.hasOwnProperty("accordion"))
+                object.accordion = message.accordion;
+            if (message.accordionOpen != null && message.hasOwnProperty("accordionOpen"))
+                object.accordionOpen = message.accordionOpen;
             return object;
         };
 
