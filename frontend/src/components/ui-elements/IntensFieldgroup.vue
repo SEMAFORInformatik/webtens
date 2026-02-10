@@ -1,6 +1,24 @@
 <template>
   <fieldset class="intens-fieldgroup" :class="[{ framed: data.frame, accordion: data.accordion, open: data.accordion && accordionOpen}, intensClass]" v-show="!data.accordion ? show : true">
-    <i-button class="intens-button" @click="toggleAccordion" v-if="data.accordion"><span>{{ data.label }}</span></i-button>
+    <i-button classes="accordion-button" @click="toggleAccordion" v-if="data.accordion">
+      <template v-if="data.accordion">
+        <template v-if="data.titleIcon">
+          <img v-if="titleIconIsPixmap" :src="data.titleIcon"></img>
+          <span v-if="!titleIconIsPixmap"> {{ data.titleIcon }}</span>
+        </template>
+        <template v-else>
+          <template v-if="accordionOpen">
+            <img v-if="accordionOpenIconIsPixmap" :src="data.accordionIconOpen"></img>
+            <span v-if="!accordionOpenIconIsPixmap"> {{ data.accordionIconOpen}}</span>
+          </template>
+          <template v-if="!accordionOpen">
+            <img v-if="accordionClosedIconIsPixmap" :src="data.accordionIconClosed"></img>
+            <span v-if="!accordionClosedIconIsPixmap"> {{ data.accordionIconClosed }}</span>
+          </template>
+        </template>
+      </template>
+      <span>{{ data.label }}</span>
+    </i-button>
     <legend class="label" v-if="data.label && !data.accordion" v-html="label"></legend>
     <div
       class="intens-fieldgroup-lines"
@@ -64,6 +82,9 @@ class IntensFieldgroup extends mixins(base) {
   accordionOpen = false
   lines: any = []
   show: boolean = this.data.base.visible || this.data.base.visible === undefined;
+  accordionIconOpenIsPixmap = false
+  accordionIconClosedIsPixmap = false
+  titleIconIsPixmap = false
 
   mounted() {
     this.intensClass = this.prefixCssClass(this.data.base.styleClass)
@@ -94,6 +115,9 @@ class IntensFieldgroup extends mixins(base) {
     this.label = unescape(this.data.label);
     this.show = this.data.base.visible || this.data.base.visible === undefined;
     this.accordionOpen = !!this.data.accordionOpen
+    this.accordionIconOpenIsPixmap = this.data.accordionIconOpen.startsWith("data:")
+    this.accordionIconClosedIsPixmap = this.data.accordionIconClosed.startsWith("data:")
+    this.titleIconIsPixmap = this.data.titleIcon.startsWith("data:")
   }
 
   getNewValue(data: in_proto.IFieldGroup) {

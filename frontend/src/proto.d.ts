@@ -1568,6 +1568,15 @@ export namespace in_proto {
 
         /** FieldGroup accordionOpen */
         accordionOpen?: (boolean|null);
+
+        /** FieldGroup accordionIconOpen */
+        accordionIconOpen?: (string|null);
+
+        /** FieldGroup accordionIconClosed */
+        accordionIconClosed?: (string|null);
+
+        /** FieldGroup titleIcon */
+        titleIcon?: (string|null);
     }
 
     /** Represents a FieldGroup. */
@@ -1614,6 +1623,15 @@ export namespace in_proto {
 
         /** FieldGroup accordionOpen. */
         public accordionOpen: boolean;
+
+        /** FieldGroup accordionIconOpen. */
+        public accordionIconOpen: string;
+
+        /** FieldGroup accordionIconClosed. */
+        public accordionIconClosed: string;
+
+        /** FieldGroup titleIcon. */
+        public titleIcon: string;
 
         /**
          * Creates a new FieldGroup instance using the specified properties.

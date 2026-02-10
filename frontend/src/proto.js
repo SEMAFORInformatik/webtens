@@ -4646,6 +4646,9 @@ export const in_proto = $root.in_proto = (() => {
          * @property {string|null} [action] FieldGroup action
          * @property {boolean|null} [accordion] FieldGroup accordion
          * @property {boolean|null} [accordionOpen] FieldGroup accordionOpen
+         * @property {string|null} [accordionIconOpen] FieldGroup accordionIconOpen
+         * @property {string|null} [accordionIconClosed] FieldGroup accordionIconClosed
+         * @property {string|null} [titleIcon] FieldGroup titleIcon
          */
 
         /**
@@ -4762,6 +4765,30 @@ export const in_proto = $root.in_proto = (() => {
         FieldGroup.prototype.accordionOpen = false;
 
         /**
+         * FieldGroup accordionIconOpen.
+         * @member {string} accordionIconOpen
+         * @memberof in_proto.FieldGroup
+         * @instance
+         */
+        FieldGroup.prototype.accordionIconOpen = "";
+
+        /**
+         * FieldGroup accordionIconClosed.
+         * @member {string} accordionIconClosed
+         * @memberof in_proto.FieldGroup
+         * @instance
+         */
+        FieldGroup.prototype.accordionIconClosed = "";
+
+        /**
+         * FieldGroup titleIcon.
+         * @member {string} titleIcon
+         * @memberof in_proto.FieldGroup
+         * @instance
+         */
+        FieldGroup.prototype.titleIcon = "";
+
+        /**
          * Creates a new FieldGroup instance using the specified properties.
          * @function create
          * @memberof in_proto.FieldGroup
@@ -4811,6 +4838,12 @@ export const in_proto = $root.in_proto = (() => {
                 writer.uint32(/* id 11, wireType 0 =*/88).bool(message.accordion);
             if (message.accordionOpen != null && Object.hasOwnProperty.call(message, "accordionOpen"))
                 writer.uint32(/* id 12, wireType 0 =*/96).bool(message.accordionOpen);
+            if (message.accordionIconOpen != null && Object.hasOwnProperty.call(message, "accordionIconOpen"))
+                writer.uint32(/* id 13, wireType 2 =*/106).string(message.accordionIconOpen);
+            if (message.accordionIconClosed != null && Object.hasOwnProperty.call(message, "accordionIconClosed"))
+                writer.uint32(/* id 14, wireType 2 =*/114).string(message.accordionIconClosed);
+            if (message.titleIcon != null && Object.hasOwnProperty.call(message, "titleIcon"))
+                writer.uint32(/* id 15, wireType 2 =*/122).string(message.titleIcon);
             return writer;
         };
 
@@ -4895,6 +4928,18 @@ export const in_proto = $root.in_proto = (() => {
                     }
                 case 12: {
                         message.accordionOpen = reader.bool();
+                        break;
+                    }
+                case 13: {
+                        message.accordionIconOpen = reader.string();
+                        break;
+                    }
+                case 14: {
+                        message.accordionIconClosed = reader.string();
+                        break;
+                    }
+                case 15: {
+                        message.titleIcon = reader.string();
                         break;
                     }
                 default:
@@ -5002,6 +5047,15 @@ export const in_proto = $root.in_proto = (() => {
             if (message.accordionOpen != null && message.hasOwnProperty("accordionOpen"))
                 if (typeof message.accordionOpen !== "boolean")
                     return "accordionOpen: boolean expected";
+            if (message.accordionIconOpen != null && message.hasOwnProperty("accordionIconOpen"))
+                if (!$util.isString(message.accordionIconOpen))
+                    return "accordionIconOpen: string expected";
+            if (message.accordionIconClosed != null && message.hasOwnProperty("accordionIconClosed"))
+                if (!$util.isString(message.accordionIconClosed))
+                    return "accordionIconClosed: string expected";
+            if (message.titleIcon != null && message.hasOwnProperty("titleIcon"))
+                if (!$util.isString(message.titleIcon))
+                    return "titleIcon: string expected";
             return null;
         };
 
@@ -5123,6 +5177,12 @@ export const in_proto = $root.in_proto = (() => {
                 message.accordion = Boolean(object.accordion);
             if (object.accordionOpen != null)
                 message.accordionOpen = Boolean(object.accordionOpen);
+            if (object.accordionIconOpen != null)
+                message.accordionIconOpen = String(object.accordionIconOpen);
+            if (object.accordionIconClosed != null)
+                message.accordionIconClosed = String(object.accordionIconClosed);
+            if (object.titleIcon != null)
+                message.titleIcon = String(object.titleIcon);
             return message;
         };
 
@@ -5154,6 +5214,9 @@ export const in_proto = $root.in_proto = (() => {
                 object.action = "";
                 object.accordion = false;
                 object.accordionOpen = false;
+                object.accordionIconOpen = "";
+                object.accordionIconClosed = "";
+                object.titleIcon = "";
             }
             if (message.base != null && message.hasOwnProperty("base"))
                 object.base = $root.in_proto.GuiElement.toObject(message.base, options);
@@ -5185,6 +5248,12 @@ export const in_proto = $root.in_proto = (() => {
                 object.accordion = message.accordion;
             if (message.accordionOpen != null && message.hasOwnProperty("accordionOpen"))
                 object.accordionOpen = message.accordionOpen;
+            if (message.accordionIconOpen != null && message.hasOwnProperty("accordionIconOpen"))
+                object.accordionIconOpen = message.accordionIconOpen;
+            if (message.accordionIconClosed != null && message.hasOwnProperty("accordionIconClosed"))
+                object.accordionIconClosed = message.accordionIconClosed;
+            if (message.titleIcon != null && message.hasOwnProperty("titleIcon"))
+                object.titleIcon = message.titleIcon;
             return object;
         };
 
