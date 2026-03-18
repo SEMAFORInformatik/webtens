@@ -217,6 +217,14 @@ export default (ioServer: SocketIO.Server, io: SocketIO.Namespace) => {
             break;
           }
           const status = response.value.status;
+          if (status === "app_error") {
+            socket.emit("error", {
+              title: "Application error encountered",
+              message: "The application encountered an error while starting. Please report to developers."
+            })
+            socket.disconnect();
+            return;
+          }
           socket.emit("loadStatus", {
             message: statusMessages[status]
           })
