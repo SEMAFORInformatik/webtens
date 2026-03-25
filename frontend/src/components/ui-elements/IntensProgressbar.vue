@@ -25,6 +25,7 @@ interface IntensSlider {
   },
 })
 class IntensProgressbar extends mixins(base) {
+  timeout?: NodeJS.Timeout;
   percent = 0;
   created() {
     this.getNewValue(this.data);
@@ -36,7 +37,16 @@ class IntensProgressbar extends mixins(base) {
     this.percent = data.percent
   }
 
-  setPercent(p) { this.percent = p; console.log(p)}
+  setPercent(p) {
+    this.percent = p;
+    if (p >= 100 && !this.timeout) {
+      this.timeout = setTimeout(() => {
+        this.$intens.addForm(this.form.base.Name, true);
+        this.timeout = undefined;
+      }, 100)
+    }
+    console.log(p)
+  }
 
 }
 
