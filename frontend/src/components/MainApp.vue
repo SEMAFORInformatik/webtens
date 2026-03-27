@@ -166,7 +166,7 @@ export default class MainApp extends mixins(base) {
   }
 
   progressBar(data) {
-    document.getElementById(data.fullName)?.__vue__?.setPercent(data.value);
+    document.getElementById(data.fullName)?.__vue__?.setPercent(data.value.doubleValue);
   }
 
   changeTab(form_name: string) {

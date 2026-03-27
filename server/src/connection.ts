@@ -293,7 +293,7 @@ export default (ioServer: SocketIO.Server, io: SocketIO.Namespace) => {
         // Have subscribe socket wait for messages
         for await (const [topic, message] of intensSubSocket) {
           Logger.info("Got published message");
-          socket.emit("progress", [topic.toString(), message.toString()])
+          socket.emit("progress", [topic.toString(), message])
         }
       }
       subscriberThread();

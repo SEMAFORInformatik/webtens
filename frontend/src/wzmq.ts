@@ -1,5 +1,6 @@
 import { Intens } from "./Intens";
 import type { Event, ResponseWithID, IntensResponse, QueueState } from "./dataTypes";
+import Vue from "vue"
 import * as SocketIOClient from "socket.io-client";
 import otel from "@opentelemetry/api";
 import { getRequestAttributes } from "./tracing";
@@ -214,15 +215,26 @@ export default class ZMQ {
    * @param {[string, string]} r [Message type, Progress data]
    * @memberof ZMQ
    */
-  progressReceive(r: [string, string]): void {
+  progressReceive(r: [string, ArrayBuffer]): void {
     this.state = "Receiving";
-    let data = JSON.parse(r[1]);
     if (r[0] === "progressbar_data") {
-      this.intens.progressBar(data);
+      console.log(r)
+      const data = in_proto.WebAPIResponse.decode(new Uint8Array(r[1]));
+      const progressBar = data.elements.dataFields[0]
+      this.intens.progressBar(progressBar);
+      this.state = "Idle";
+      return
+    }
+    if (r[0] === "updated_element_data") {
+      console.log(r)
+      const data = in_proto.WebAPIResponse.decode(new Uint8Array(r[1]));
+      console.log(data)
+      Vue.prototype.$ids.processElementUpdates(data.elements);
       this.state = "Idle";
       return
     }
 
+    let data = JSON.parse(new TextDecoder().decode(r[1]));
     let dialogTitle = data.ProgressDialog.WindowTitle ? data.ProgressDialog.WindowTitle[0] : "Dialog ProgressBar";
     let mainTitle = data.ProgressDialog.MainTitle ? data.ProgressDialog.MainTitle[0] : "";
     let subTitle = data.ProgressDialog.SubTitle ? data.ProgressDialog.SubTitle[0] : "";
