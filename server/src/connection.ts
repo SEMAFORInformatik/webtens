@@ -203,6 +203,7 @@ export default (ioServer: SocketIO.Server, io: SocketIO.Namespace) => {
         socket.disconnect();
         return;
       }
+      Logger.info("Got username " + username);
 
       instance = new IntensInstance(sessionID, useAlternatives, utcOffset);
       let ip: string = null;
@@ -217,7 +218,9 @@ export default (ioServer: SocketIO.Server, io: SocketIO.Namespace) => {
             break;
           }
           const status = response.value.status;
+          Logger.info(`Current app status: ${status}`)
           if (status === "app_error") {
+            Logger.warn("App error encountered during startup. Aborting.")
             socket.emit("error", {
               title: "Application error encountered",
               message: "The application encountered an error while starting. Please report to developers."
