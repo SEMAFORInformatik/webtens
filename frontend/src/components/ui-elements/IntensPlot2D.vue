@@ -915,6 +915,10 @@ class IntensPlot2D extends mixins(base) {
   setScale(axis: axisName) {
     // Holt die Plotachse
     let ax: PlotAxis;
+    const itemCount = this.backupPlotData.plotItems.reduce((a, e) => e.x.length + e.y.length + a, 0)
+    if (itemCount === 0) {
+      return
+    }
     const centerOffset = Math.ceil(this.backupPlotData.maxX) - this.backupPlotData.maxX
     switch (axis) {
       case "XAxis":
@@ -961,6 +965,8 @@ class IntensPlot2D extends mixins(base) {
       this.series = [];
     }
     let items = data.plotItems;
+    const itemCount = items.reduce((a, e) => e.x.length + e.y.length + a, 0)
+    const empty = itemCount === 0
 
     for (let i in items) {
       const range = items[i].maxX - items[i].minY
@@ -1009,11 +1015,13 @@ class IntensPlot2D extends mixins(base) {
        'no symbol';
 
       if (!append) {
-        this.setColor(serie.name, lineColor);
-        this.setSymbolColor(serie.name, symbolColor);
-        this.$set(this.symbolSize, serie.name, symbolSize)
-        this.setSymbolSize(serie.name);
-        this.setSymbolStyle(serie.name, symbolStyle)
+        if (!empty) {
+          this.setColor(serie.name, lineColor);
+          this.setSymbolColor(serie.name, symbolColor);
+          this.$set(this.symbolSize, serie.name, symbolSize)
+          this.setSymbolSize(serie.name);
+          this.setSymbolStyle(serie.name, symbolStyle)
+        }
         serie.lineStyle = { color: lineColor, type: lineStyle, opacity: lineStyle === "No" ? 0 : 1};
         serie.symbol = symbolStyle_;
         serie.showSymbol = symbolStyle_ !== "no symbol"
