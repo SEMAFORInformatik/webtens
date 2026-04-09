@@ -1,5 +1,5 @@
 <template>
-  <div class="intens-folder" :id="data.name" :class="intensClass" :style="expandHorizontal ? 'flex-grow:1;' : ''">
+  <div class="intens-folder" :id="data.name" :class="intensClass" :style="expandHorizontal ? 'flex-grow:1;' : ''" v-show="pages.reduce((acc, c) => c.visible || acc, false)">
     <vue-tabs v-if="data.buttons" v-model="index" @tab-change="changeTab" :buttonAlignment="buttonsAreBottom ? 'bottom' :'top'"">
       <template v-for="page in pages">
         <v-tab
@@ -45,8 +45,7 @@ class IntensFolder extends mixins(base) {
   updateKey = 0;
   hasBeenShown: {[key: string]: boolean} = {};
   pages = this.data.pages.map((page) => {
-    page.visible = true;
-    return page;
+    return {visible: true, ...page};
   });
   sending: boolean = false;
 
