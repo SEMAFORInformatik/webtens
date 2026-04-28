@@ -1,20 +1,18 @@
 <template>
   <fieldset class="intens-fieldgroup" :class="[{ framed: data.frame, accordion: data.accordion, open: data.accordion && accordionOpen}, intensClass]" v-show="!data.accordion ? show : true">
     <i-button classes="accordion-button" @click="toggleAccordion" v-if="data.accordion">
-      <template v-if="data.accordion">
-        <template v-if="data.titleIcon">
-          <img v-if="titleIconIsPixmap" :src="data.titleIcon"></img>
-          <span v-if="!titleIconIsPixmap"> {{ data.titleIcon }}</span>
+      <template v-if="data.titleIcon">
+        <img v-if="titleIconIsPixmap" :src="data.titleIcon"></img>
+        <span v-if="!titleIconIsPixmap"> {{ data.titleIcon }}</span>
+      </template>
+      <template v-if="!data.titleIcon">
+        <template v-if="accordionOpen">
+          <img v-if="accordionOpenIconIsPixmap" :src="data.accordionIconOpen"></img>
+          <span v-if="!accordionOpenIconIsPixmap"> {{ data.accordionIconOpen}}</span>
         </template>
-        <template v-else>
-          <template v-if="accordionOpen">
-            <img v-if="accordionOpenIconIsPixmap" :src="data.accordionIconOpen"></img>
-            <span v-if="!accordionOpenIconIsPixmap"> {{ data.accordionIconOpen}}</span>
-          </template>
-          <template v-if="!accordionOpen">
-            <img v-if="accordionClosedIconIsPixmap" :src="data.accordionIconClosed"></img>
-            <span v-if="!accordionClosedIconIsPixmap"> {{ data.accordionIconClosed }}</span>
-          </template>
+        <template v-if="!accordionOpen">
+          <img v-if="accordionClosedIconIsPixmap" :src="data.accordionIconClosed"></img>
+          <span v-if="!accordionClosedIconIsPixmap"> {{ data.accordionIconClosed }}</span>
         </template>
       </template>
       <span>{{ data.label }}</span>
@@ -82,8 +80,8 @@ class IntensFieldgroup extends mixins(base) {
   accordionOpen = false
   lines: any = []
   show: boolean = this.data.base.visible || this.data.base.visible === undefined;
-  accordionIconOpenIsPixmap = false
-  accordionIconClosedIsPixmap = false
+  accordionOpenIconIsPixmap = false
+  accordionClosedIconIsPixmap = false
   titleIconIsPixmap = false
 
   mounted() {
@@ -115,8 +113,8 @@ class IntensFieldgroup extends mixins(base) {
     this.label = unescape(this.data.label);
     this.show = this.data.base.visible || this.data.base.visible === undefined;
     this.accordionOpen = !!this.data.accordionOpen
-    this.accordionIconOpenIsPixmap = this.data.accordionIconOpen.startsWith("data:")
-    this.accordionIconClosedIsPixmap = this.data.accordionIconClosed.startsWith("data:")
+    this.accordionOpenIconIsPixmap = this.data.accordionIconOpen.startsWith("data:")
+    this.accordionClosedIconIsPixmap = this.data.accordionIconClosed.startsWith("data:")
     this.titleIconIsPixmap = this.data.titleIcon.startsWith("data:")
   }
 
@@ -144,6 +142,13 @@ class IntensFieldgroup extends mixins(base) {
 
   toggleAccordion() {
     this.accordionOpen = !this.accordionOpen
+    this.guiElementMethod({
+      method: "SetAccordionOpen",
+      name: this.data.base.Name,
+      argument: JSON.stringify({
+        open: this.accordionOpen
+      })
+    })
   }
 
   isSeparator(type: in_proto.GuiElement.Type) {
