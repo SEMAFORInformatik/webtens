@@ -1,5 +1,5 @@
 <template>
-  <div :class="[{ selectionMode: selectionMode }, intensClass, `select-header-colors-${dataCache.numFrozenRows}`]" :id="data.base.Name" @contextmenu="openCtxMenu">
+  <div :class="[{ selectionMode: selectionMode }, intensClass, `select-header-colors-${dataCache.numFrozenRows}`]" :id="data.base.Name" @contextmenu="openCtxMenu" v-if="dataCache.base.visible">
     <b v-if="data.title" v-html="title"></b>
     <ve-table class="intens-table" ref="tableEle" :columns="selectionMode ? originalColumns : columns" :table-data="selectionMode ? tableData : shownTableData" row-key-field-name="index"
       :clipboard-option="{ beforePaste: pasteInterrupt }"
