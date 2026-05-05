@@ -1,5 +1,5 @@
 <template>
-  <fieldset class="intens-fieldgroup" :class="[{ framed: data.frame, accordion: data.accordion, open: data.accordion && accordionOpen}, intensClass]" v-show="!data.accordion ? show : true">
+  <fieldset class="intens-fieldgroup" :class="[{ framed: data.frame, accordion: data.accordion, open: data.accordion && accordionOpen}, intensClass]" v-show="show">
     <i-button classes="accordion-button" @click="toggleAccordion" v-if="data.accordion">
       <template v-if="data.titleIcon">
         <img v-if="titleIconIsPixmap" :src="data.titleIcon"></img>
@@ -15,7 +15,7 @@
           <span v-if="!accordionClosedIconIsPixmap"> {{ data.accordionIconClosed }}</span>
         </template>
       </template>
-      <span>{{ data.label }}</span>
+      <span v-html="label"></span>
     </i-button>
     <legend class="label" v-if="data.label && !data.accordion" v-html="label"></legend>
     <div
@@ -79,7 +79,7 @@ class IntensFieldgroup extends mixins(base) {
   click: any = null;
   accordionOpen = false
   lines: any = []
-  show: boolean = this.data.base.visible || this.data.base.visible === undefined;
+  show: boolean = this.data.base.visible;
   accordionOpenIconIsPixmap = false
   accordionClosedIconIsPixmap = false
   titleIconIsPixmap = false
@@ -111,7 +111,7 @@ class IntensFieldgroup extends mixins(base) {
 
 
     this.label = unescape(this.data.label);
-    this.show = this.data.base.visible || this.data.base.visible === undefined;
+    this.show = this.data.base.visible;
     this.accordionOpen = !!this.data.accordionOpen
     this.accordionOpenIconIsPixmap = this.data.accordionIconOpen.startsWith("data:")
     this.accordionClosedIconIsPixmap = this.data.accordionIconClosed.startsWith("data:")
