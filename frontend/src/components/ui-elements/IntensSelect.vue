@@ -57,7 +57,7 @@ class IntensSelect extends mixins(base) {
   columnWidth!: number;
   @Prop({ default: true })
   editable!: boolean;
-  value = this.data.base.value.stringValue || this.data.base.value.intValue || this.data.base.value.formattedValue;
+  value = String(this.data.base.value.stringValue || this.data.base.value.intValue || this.data.base.value.formattedValue);
   disabled = !this.data.base.editable;
   output = this.data.outputDataset
   input = this.data.inputDataset;
@@ -96,7 +96,7 @@ class IntensSelect extends mixins(base) {
     this.disabled = !data.base.editable;
     this.input = data.inputDataset;
     this.output = data.outputDataset;
-    this.value = data.base.value.stringValue || data.base.value.intValue || data.base.value.formattedValue;
+    this.value = String(data.base.value.stringValue || data.base.value.intValue || data.base.value.formattedValue);
     this.fullName = data.base.fullName!;
     this.color = data.base.fgColor && data.base.fgColor.length ? data.base.fgColor : "#000000";
     this.backgroundColor = data.base.bgColor && data.base.bgColor.length ? data.base.bgColor : "#ffffff";
