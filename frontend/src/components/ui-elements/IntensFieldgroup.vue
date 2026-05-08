@@ -148,7 +148,7 @@ class IntensFieldgroup extends mixins(base) {
       argument: JSON.stringify({
         open: this.accordionOpen
       })
-    })
+    }, false)
   }
 
   isSeparator(type: in_proto.GuiElement.Type) {
